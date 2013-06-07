@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sketch.Web.Syndication;
+using Sketch.StockPhotoImporter.Syndication;
 
 namespace Sketch.Test
 {

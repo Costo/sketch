@@ -1,7 +1,7 @@
 ﻿using System;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sketch.Web.Scraping;
+using Sketch.StockPhotoImporter.Scraping;
 
 namespace Sketch.Test
 {

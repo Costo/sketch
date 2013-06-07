@@ -1,6 +1,6 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
-namespace Sketch.Web.Syndication
+namespace Sketch.StockPhotoImporter.Syndication
 {
     public class FeedItem
     {

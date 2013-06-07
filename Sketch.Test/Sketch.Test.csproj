@@ -76,6 +76,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sketch.StockPhotoImporter\Sketch.StockPhotoImporter.csproj">
+      <Project>{37ad1abf-51e3-4146-8aec-18bc8eca4010}</Project>
+      <Name>Sketch.StockPhotoImporter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sketch.Web\Sketch.Web.csproj">
       <Project>{3BA54107-0A15-4579-B370-CFD01943AA7D}</Project>
       <Name>Sketch.Web</Name>

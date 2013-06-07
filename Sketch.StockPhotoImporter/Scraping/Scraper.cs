@@ -1,13 +1,19 @@
-﻿using HtmlAgilityPack;
+using System;
+using HtmlAgilityPack;
 
-namespace Sketch.Web.Scraping
+namespace Sketch.StockPhotoImporter.Scraping
 {
     public class Scraper
     {
         readonly HtmlDocument _document;
         public Scraper(HtmlDocument document)
         {
-            this._document = document;
+            _document = document;
+        }
+
+        public Scraper(string url)
+        {
+            _document = new HtmlWeb().Load(url);
         }
 
         public string GetRssFeedUrl()
