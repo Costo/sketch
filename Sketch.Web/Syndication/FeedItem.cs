@@ -7,13 +7,16 @@ namespace Sketch.Web.Syndication
         public static FeedItem Create(XElement element)
         {
             var xmlnsMedia = XNamespace.Get("http://search.yahoo.com/mrss/");
+            var contentElement = element.Element(xmlnsMedia.GetName("content"));
             return new FeedItem
                        {
                            Title = (string)element.Element("title"),
                            Link = (string)element.Element("link"),
                            PubDate = (string)element.Element("pubDate"),
                            Description = (string)element.Element(xmlnsMedia.GetName("description")),
-                           Content = (string)element.Element(xmlnsMedia.GetName("content")),
+                           Content = contentElement == null 
+                               ? default(string) 
+                               : (string)contentElement.Attribute("url"),
                        };
         }
 
@@ -26,5 +29,10 @@ namespace Sketch.Web.Syndication
         public string Description { get; private set; }
 
         public string Content { get; private set; }
+
+        public bool HasContent
+        {
+            get { return !string.IsNullOrEmpty(Content); }
+        }
     }
 }

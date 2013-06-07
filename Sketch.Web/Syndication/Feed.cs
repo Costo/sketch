@@ -16,7 +16,7 @@ namespace Sketch.Web.Syndication
 
         IEnumerator<FeedItem> IEnumerable<FeedItem>.GetEnumerator()
         {
-            return document.Descendants(XName.Get("content", "http://search.yahoo.com/mrss/"))
+            return document.Descendants("item")
                            .Select(FeedItem.Create).GetEnumerator();
         }
 

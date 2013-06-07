@@ -6,6 +6,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AutoMapper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Sketch.Web
 {
@@ -23,6 +26,16 @@ namespace Sketch.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            var profile = new AutoMapperProfile();
+            Mapper.AddProfile(profile);
+            Mapper.AssertConfigurationIsValid(profile.ProfileName);
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+                
         }
     }
 }
