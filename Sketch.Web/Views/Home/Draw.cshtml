@@ -1,0 +1,37 @@
+﻿@using Newtonsoft.Json
+@model Sketch.Web.Models.DrawingSessionModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class='row'>
+    <div class='span12'>
+        <h1>@ViewBag.Title</h1>
+        
+        <div class="img-container"></div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos))
+        window.Sketch = {
+            photos: photos
+        };
+        
+        showNextPhoto();
+
+
+        function showNextPhoto() {
+            var photo = Sketch.photos.shift();
+            
+            if (photo) {
+                var $img = $('<img>').attr({
+                    src: photo.imageUrl
+                });
+                $('.img-container').html($img);
+                setTimeout(showNextPhoto, photo.duration);
+            }
+        }
+    </script>
+}

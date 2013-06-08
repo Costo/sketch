@@ -19,6 +19,17 @@ namespace Sketch.Web.Controllers
 
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(FormCollection form)
+        {
+            return RedirectToAction("Draw");
+        }
+
+        public ActionResult Draw()
+        {
             var photos = _dao.GetRandomStockPhotos(10);
             return View(new DrawingSessionModel
             {
