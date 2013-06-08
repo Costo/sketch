@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using Sketch.Web.Controllers;
+using Sketch.Core.Entities;
 
-namespace Sketch.Web.Models
+namespace Sketch.Core.Database
 {
     public class SketchDbContext: DbContext
     {

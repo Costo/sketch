@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using AutoMapper;
+using Sketch.Core.ReadModel;
 using Sketch.Web.Models;
 
 namespace Sketch.Web.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IStockPhotoDao _dao;
+
+        public HomeController(IStockPhotoDao dao)
+        {
+            _dao = dao;
+        }
+
         public ActionResult Index()
         {
-            var repository = new StockPhotoRepository();
-            var photos = repository.GetRandomStockPhotos(10);
+            var photos = _dao.GetRandomStockPhotos(10);
             return View(new DrawingSessionModel
             {
                 Photos = Mapper.Map<DrawingSessionModel.TimedPhoto[]>(photos)
@@ -33,28 +38,6 @@ namespace Sketch.Web.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
-        }
-    }
-
-    public class StockPhotoRepository
-
-    {
-        public StockPhoto[] GetRandomStockPhotos(int count)
-        {
-            //var web = new HtmlWeb();
-            //var document = web.Load("http://browse.deviantart.com/resources/stockart/model/");
-            //var parser = new Scraper(document);
-            //var feedUrl = parser.GetRssFeedUrl();
-            //var feed = new Feed(XDocument.Load(feedUrl));
-
-            //var random = new Random();
-            //return feed
-            //    .Where(x=>x.HasContent)
-            //    .OrderBy(x=> random.NextDouble())
-            //    .Take(count)
-            //    .Select(StockPhoto.CreateFrom)
-            //    .ToArray();
-            throw new NotImplementedException();
         }
     }
 }

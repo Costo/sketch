@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Sketch.Core.Entities;
 using Sketch.Web.Controllers;
 using Sketch.Web.Models;
 

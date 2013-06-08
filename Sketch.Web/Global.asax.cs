@@ -26,6 +26,7 @@ namespace Sketch.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            Bootstrapper.Initialize();
 
             var profile = new AutoMapperProfile();
             Mapper.AddProfile(profile);

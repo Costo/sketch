@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Sketch.Web.Models
+using System.ComponentModel.DataAnnotations;
+namespace Sketch.Core.Entities
 {
     public class StockPhoto
     {
