@@ -14,6 +14,7 @@ namespace Sketch.StockPhotoImporter.Syndication
                            Link = (string)element.Element("link"),
                            PubDate = (string)element.Element("pubDate"),
                            Description = (string)element.Element(xmlnsMedia.GetName("description")),
+                           Rating = (string)element.Element(xmlnsMedia.GetName("rating")),
                            Content = contentElement == null 
                                ? default(string) 
                                : (string)contentElement.Attribute("url"),
@@ -30,9 +31,12 @@ namespace Sketch.StockPhotoImporter.Syndication
 
         public string Content { get; private set; }
 
+        public object Rating { get; set; }
+
         public bool HasContent
         {
             get { return !string.IsNullOrEmpty(Content); }
         }
+
     }
 }

@@ -21,7 +21,7 @@ namespace Sketch.StockPhotoImporter
         {
             Initialize();
 
-            var importer = new Importer(() => new SketchDbContext());
+            var importer = new Importer(() => new SketchDbContext(), new Clock());
 
             OptionSet p = new OptionSet()
               .Add("u=", url => importer.Url = url );
@@ -61,11 +61,13 @@ namespace Sketch.StockPhotoImporter
 
     internal class Importer
     {
-        private readonly Func<DbContext> _contextFactory;
+        readonly Func<DbContext> _contextFactory;
+        readonly IClock _clock;
 
-        public Importer(Func<DbContext> contextFactory )
+        public Importer(Func<DbContext> contextFactory, IClock clock )
         {
             _contextFactory = contextFactory;
+            _clock = clock;
         }
 
         public string Url { get; set; }
@@ -85,7 +87,11 @@ namespace Sketch.StockPhotoImporter
                         var photo = Mapper.Map<StockPhoto>(item);
                         
                         var existing = set.Find(photo.ImageUrl);
-                        if (existing == null) set.Add(photo);
+                        if (existing == null)
+                        {
+                            photo.ImportedDate = _clock.UtcNow;
+                            set.Add(photo);
+                        }
                     }
                     context.SaveChanges();
                 }

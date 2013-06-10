@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
-using System.Xml.Linq;
 using AutoMapper;
+using Sketch.Core.Commands;
+using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
 using Sketch.Web.Models;
 
@@ -10,10 +10,12 @@ namespace Sketch.Web.Controllers
 {
     public class HomeController : Controller
     {
-        readonly IStockPhotoDao _dao;
+        private readonly ICommandBus _commandBus;
+        readonly IDrawingSessionsDao _dao;
 
-        public HomeController(IStockPhotoDao dao)
+        public HomeController(ICommandBus commandBus, IDrawingSessionsDao dao)
         {
+            _commandBus = commandBus;
             _dao = dao;
         }
 
@@ -25,16 +27,19 @@ namespace Sketch.Web.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection form)
         {
-            return RedirectToAction("Draw");
+            var drawingSessionId = Guid.NewGuid();
+            _commandBus.Send(new GenerateDrawingSession
+            {
+                DrawingSessionId = Guid.NewGuid()
+            });
+
+            return RedirectToAction("Draw", new { Id = drawingSessionId });
         }
 
-        public ActionResult Draw()
+        public ActionResult Draw(Guid id)
         {
-            var photos = _dao.GetRandomStockPhotos(10);
-            return View(new DrawingSessionModel
-            {
-                Photos = Mapper.Map<DrawingSessionModel.TimedPhoto[]>(photos)
-            });
+            _dao.Find(id);
+            return View();
         }
 
         public ActionResult About()
@@ -50,5 +55,14 @@ namespace Sketch.Web.Controllers
 
             return View();
         }
+    }
+
+    public interface IDrawingSessionsDao
+    {
+        DrawingSessionDetail Find(Guid id);
+    }
+
+    public class DrawingSessionDetail
+    {
     }
 }

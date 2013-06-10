@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Sketch.Core.Database;
+using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
 using Sketch.Core.ReadModel.Impl;
 using Unity.Mvc4;
@@ -37,6 +38,16 @@ namespace Sketch.Web
     {
         Func<DbContext> contextFactory = () => new SketchDbContext();
         container.RegisterType<IStockPhotoDao, StockPhotoDao>(new InjectionConstructor(contextFactory));
+        container.RegisterType<ICommandBus, InMemoryCommandBus>();
     }
   }
+
+    public class InMemoryCommandBus: ICommandBus
+    {
+        public void Send(ICommand command)
+        {
+            command.GetType();
+
+        }
+    }
 }

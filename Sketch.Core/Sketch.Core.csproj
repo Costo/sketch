@@ -41,6 +41,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -52,8 +55,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlers\DrawingSessionCommandHandler.cs" />
+    <Compile Include="Commands\GenerateDrawingSession.cs" />
     <Compile Include="Database\SketchDbContext.cs" />
+    <Compile Include="Domain\DrawingSession.cs" />
     <Compile Include="Entities\StockPhoto.cs" />
+    <Compile Include="Events\DrawingSessionCreated.cs" />
+    <Compile Include="Events\DrawingSessionPhotoAdded.cs" />
+    <Compile Include="Infrastructure\AggregateRoot.cs" />
+    <Compile Include="Infrastructure\Command.cs" />
+    <Compile Include="Infrastructure\DomainEvent.cs" />
+    <Compile Include="Infrastructure\ICommandBus.cs" />
+    <Compile Include="Infrastructure\ICommandHandler.cs" />
+    <Compile Include="Infrastructure\IEvent.cs" />
+    <Compile Include="Infrastructure\IEventSourced.cs" />
+    <Compile Include="Infrastructure\IEventStore.cs" />
+    <Compile Include="Infrastructure\ITextSerializer.cs" />
+    <Compile Include="Infrastructure\JsonSerializer.cs" />
+    <Compile Include="Infrastructure\Storage\Event.cs" />
+    <Compile Include="Infrastructure\Storage\EventStoreDbContext.cs" />
+    <Compile Include="Infrastructure\Storage\SqlEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\Impl\StockPhotoDao.cs" />
     <Compile Include="ReadModel\IStockPhotoDao.cs" />

@@ -55,12 +55,13 @@ namespace Sketch.Test
                 .First();
 
             var actual =  FeedItem.Create(expected);
-            
-            Assert.AreEqual(expected.Element("title").Value, actual.Title);
-            Assert.AreEqual(expected.Element("link").Value, actual.Link);
-            Assert.AreEqual(expected.Element("pubDate").Value, actual.PubDate);
-            Assert.AreEqual(expected.Element(xmlnsMedia.GetName("description")).Value, actual.Description);
+
+            Assert.AreEqual((string)expected.Element("title"), actual.Title);
+            Assert.AreEqual((string)expected.Element("link"), actual.Link);
+            Assert.AreEqual((string)expected.Element("pubDate"), actual.PubDate);
+            Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("description")), actual.Description);
             Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("content")).Attribute("url"), actual.Content);
+            Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("rating")), actual.Rating);
 
         }
     }

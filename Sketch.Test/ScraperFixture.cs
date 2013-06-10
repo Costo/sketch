@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sketch.StockPhotoImporter.Scraping;
@@ -22,6 +23,7 @@ namespace Sketch.Test
 
             Assert.AreEqual(RssFeedUrl, actual);
         }
+
         [TestMethod]
         public void when_html_document_doesnt_contain_rss_feed()
         {
