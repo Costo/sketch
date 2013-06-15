@@ -1,5 +1,6 @@
 using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Sketch.Core.ReadModel.Impl
 {
@@ -16,7 +17,9 @@ namespace Sketch.Core.ReadModel.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<DrawingSessionDetail>().Find(id);
+                return context.Set<DrawingSessionDetail>()
+                    .Include(x => x.Photos)
+                    .SingleOrDefault(x=>x.Id == id);
             }
         }
     }

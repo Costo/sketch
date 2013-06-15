@@ -25,8 +25,10 @@ namespace Sketch.Core
             container.RegisterType<ICommandHandler, StockPhotoCommandHandler>("StockPhotoCommandHandler");
 
             container.RegisterType<IEventHandler, StockPhotoDenormalizer>("StockPhotoDenormalizer", new InjectionConstructor(contextFactory));
+            container.RegisterType<IEventHandler, DrawingSessionDenormalizer>("DrawingSessionDenormalizer", new InjectionConstructor(contextFactory));
 
             container.RegisterType<IStockPhotoDao, StockPhotoDao>(new InjectionConstructor(contextFactory));
+            container.RegisterType<IDrawingSessionDao, DrawingSessionDao>(new InjectionConstructor(contextFactory));
 
         }
     }

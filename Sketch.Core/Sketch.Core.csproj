@@ -72,6 +72,7 @@
     <Compile Include="Database\SketchDbContext.cs" />
     <Compile Include="Domain\DrawingSession.cs" />
     <Compile Include="Domain\StockPhoto.cs" />
+    <Compile Include="EventHandlers\DrawingSessionDenormalizer.cs" />
     <Compile Include="EventHandlers\StockPhotoDenormalizer.cs" />
     <Compile Include="Events\StockPhotoCreated.cs" />
     <Compile Include="Infrastructure\ICommandHandlerRegistry.cs" />

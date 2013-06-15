@@ -30,7 +30,7 @@ namespace Sketch.Web.Controllers
             var drawingSessionId = Guid.NewGuid();
             _commandBus.Send(new GenerateDrawingSession
             {
-                DrawingSessionId = Guid.NewGuid()
+                DrawingSessionId = drawingSessionId
             });
 
             return RedirectToAction("Draw", new { Id = drawingSessionId });
@@ -38,8 +38,9 @@ namespace Sketch.Web.Controllers
 
         public ActionResult Draw(Guid id)
         {
-            _dao.Find(id);
-            return View();
+            var model = _dao.Find(id);
+
+            return View(model);
         }
 
         public ActionResult About()

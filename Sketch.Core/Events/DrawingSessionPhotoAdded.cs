@@ -5,7 +5,7 @@ namespace Sketch.Core.Events
 {
     public class DrawingSessionPhotoAdded: DomainEvent
     {
-        public string PhotoUrl { get; set; }
+        public string ImageUrl { get; set; }
 
         public TimeSpan Duration { get; set; }
     }

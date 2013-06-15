@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json
-@model Sketch.Web.Models.DrawingSessionModel
+@using Sketch.Web.Serialization
+@model  Sketch.Core.ReadModel.DrawingSessionDetail
 @{
     ViewBag.Title = "Home Page";
 }
@@ -14,7 +15,10 @@
 @section scripts
 {
     <script>
-        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos))
+        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos, new JsonSerializerSettings
+                                                                            {
+                                                                                ContractResolver = new DrawingSessionContractResolver()
+                                                                            }))
         window.Sketch = {
             photos: photos
         };

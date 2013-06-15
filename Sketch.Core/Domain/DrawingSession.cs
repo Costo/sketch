@@ -18,7 +18,7 @@ namespace Sketch.Core.Domain
         {
             this.Update(new DrawingSessionPhotoAdded
             {
-                PhotoUrl = photoUrl,
+                ImageUrl = photoUrl,
                 Duration = duration
             });
         }

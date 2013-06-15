@@ -1,49 +1,50 @@
-using System;
-using System.Data.Entity;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
-using Sketch.Core.CommandHandlers;
-using Sketch.Core.Database;
 using Sketch.Core.Infrastructure;
-using Sketch.Core.ReadModel;
-using Sketch.Core.ReadModel.Impl;
+using Sketch.Core.Infrastructure.Storage;
 using Unity.Mvc4;
 
 namespace Sketch.Web
 {
-  public static class Bootstrapper
-  {
-    public static IUnityContainer Initialize()
+    public static class Bootstrapper
     {
-      var container = BuildUnityContainer();
+        public static IUnityContainer Initialize()
+        {
+            var container = BuildUnityContainer();
 
-      DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
 
-      return container;
+            return container;
+        }
+
+        private static IUnityContainer BuildUnityContainer()
+        {
+            var container = new UnityContainer();
+            new Sketch.Core.Module().Init(container);
+            RegisterTypes(container);
+
+            return container;
+        }
+
+        public static void RegisterTypes(IUnityContainer container)
+        {
+            container.RegisterType<ITextSerializer, JsonSerializer>();
+            var eventBus = new InMemoryEventBus();
+            container.RegisterInstance<IEventBus>(eventBus);
+            var commandBus = new InMemoryCommandBus();
+            container.RegisterInstance<ICommandBus>(commandBus);
+
+            container.RegisterType<IEventStore, SqlEventStore>();
+
+            foreach (var handler in container.ResolveAll<ICommandHandler>())
+            {
+                commandBus.Register(handler);
+            }
+
+            foreach (var handler in container.ResolveAll<IEventHandler>())
+            {
+                eventBus.Register(handler);
+            }
+        }
     }
-
-    private static IUnityContainer BuildUnityContainer()
-    {
-      var container = new UnityContainer();
-
-      // register all your components with the container here
-      // it is NOT necessary to register your controllers
-
-      // e.g. container.RegisterType<ITestService, TestService>();    
-      RegisterTypes(container);
-
-      return container;
-    }
-
-    public static void RegisterTypes(IUnityContainer container)
-    {
-        Func<DbContext> contextFactory = () => new SketchDbContext();
-        container.RegisterType<IStockPhotoDao, StockPhotoDao>(new InjectionConstructor(contextFactory));
-        container.RegisterType<IDrawingSessionDao, DrawingSessionDao>(new InjectionConstructor(contextFactory));
-
-        var commandBus = new InMemoryCommandBus();
-        commandBus.Register(container.Resolve<DrawingSessionCommandHandler>());
-        container.RegisterInstance<ICommandBus>(commandBus);
-    }
-  }
 }
