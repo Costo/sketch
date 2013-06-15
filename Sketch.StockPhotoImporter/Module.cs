@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using Sketch.Core.CommandHandlers;
 using Sketch.Core.Database;
+using Sketch.Core.Infrastructure;
+using Sketch.Core.Infrastructure.Storage;
 using Sketch.Core.ReadModel;
 using Sketch.Core.ReadModel.Impl;
 
@@ -15,8 +18,24 @@ namespace Sketch.StockPhotoImporter
     {
         public void Init(IUnityContainer container)
         {
-            Func<DbContext> contextFactory = () => new SketchDbContext();
-            container.RegisterType<IStockPhotoDao, StockPhotoDao>(new InjectionConstructor(contextFactory));
+            container.RegisterType<ITextSerializer, JsonSerializer>();
+            var eventBus = new InMemoryEventBus();
+            container.RegisterInstance<IEventBus>(eventBus);
+            var commandBus = new InMemoryCommandBus();
+            container.RegisterInstance<ICommandBus>(commandBus);
+
+            container.RegisterType<IEventStore, SqlEventStore>();
+
+            foreach (var handler in container.ResolveAll<ICommandHandler>())
+            {
+                commandBus.Register(handler);
+            }
+
+            foreach (var handler in container.ResolveAll<IEventHandler>())
+            {
+                eventBus.Register(handler);
+            }
+            
         }
     }
 }

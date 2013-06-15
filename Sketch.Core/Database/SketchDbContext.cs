@@ -1,5 +1,5 @@
 using System.Data.Entity;
-using Sketch.Core.Entities;
+using Sketch.Core.ReadModel;
 
 namespace Sketch.Core.Database
 {
@@ -10,6 +10,7 @@ namespace Sketch.Core.Database
         {
         }
 
-        public DbSet<StockPhoto> StockPhotos { get; set; }
+        public DbSet<StockPhotoDetail> StockPhotos { get; set; }
+        public DbSet<DrawingSessionDetail> DrawingSessions { get; set; }
     }
 }

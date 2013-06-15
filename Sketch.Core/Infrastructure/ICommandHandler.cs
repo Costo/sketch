@@ -1,7 +1,12 @@
 ﻿namespace Sketch.Core.Infrastructure
 {
-    public interface ICommandHandler<in T> where T: ICommand
+    public interface ICommandHandler<in T> : ICommandHandler where T : ICommand
     {
         void Handle(T command);
+    }
+
+    public interface ICommandHandler
+    {
+        
     }
 }

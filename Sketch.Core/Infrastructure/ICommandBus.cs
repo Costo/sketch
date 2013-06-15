@@ -4,7 +4,7 @@ namespace Sketch.Core.Infrastructure
 {
     public interface ICommandBus
     {
-        void Send(ICommand command);
+        void Send<T>(T command) where T : ICommand;
     }
 
     public interface ICommand

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using Sketch.Core.Entities;
 
 namespace Sketch.Core.ReadModel.Impl
 {
@@ -16,14 +15,22 @@ namespace Sketch.Core.ReadModel.Impl
             _random = new Random();
         }
 
-        public StockPhoto[] GetRandomStockPhotos(int count)
+        public StockPhotoDetail[] GetRandomStockPhotos(int count)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<StockPhoto>().ToArray()
+                return context.Set<StockPhotoDetail>().ToArray()
                               .OrderBy(x => _random.NextDouble())
                               .Take(count)
                               .ToArray();
+            }
+        }
+
+        public bool Exists(string imageUrl)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<StockPhotoDetail>().Find(imageUrl) != null;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Sketch.Core.Entities;
+using Sketch.Core.ReadModel;
 using Sketch.Web.Controllers;
 using Sketch.Web.Models;
 
@@ -9,7 +9,7 @@ namespace Sketch.Web
     {
         protected override void Configure()
         {
-            this.CreateMap<StockPhoto, DrawingSessionModel.TimedPhoto>()
+            this.CreateMap<StockPhotoDetail, DrawingSessionModel.TimedPhoto>()
                 .ForMember(x => x.Duration, opt => opt.Ignore());
         }
     }

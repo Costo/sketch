@@ -1,9 +1,8 @@
-using Sketch.Core.Entities;
-
 namespace Sketch.Core.ReadModel
 {
     public interface IStockPhotoDao
     {
-        StockPhoto[] GetRandomStockPhotos(int count);
+        StockPhotoDetail[] GetRandomStockPhotos(int count);
+        bool Exists(string imageUrl);
     }
 }

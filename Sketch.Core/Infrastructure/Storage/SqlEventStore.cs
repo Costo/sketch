@@ -30,7 +30,7 @@ namespace Sketch.Core.Infrastructure.Storage
                 }
                 context.SaveChanges();
             }
-            _eventBus.Publish(eventSourced.Events);
+            _eventBus.Publish(events: eventSourced.Events);
         }
     }
 

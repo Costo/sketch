@@ -11,9 +11,9 @@ namespace Sketch.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ICommandBus _commandBus;
-        readonly IDrawingSessionsDao _dao;
+        readonly IDrawingSessionDao _dao;
 
-        public HomeController(ICommandBus commandBus, IDrawingSessionsDao dao)
+        public HomeController(ICommandBus commandBus, IDrawingSessionDao dao)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -55,14 +55,5 @@ namespace Sketch.Web.Controllers
 
             return View();
         }
-    }
-
-    public interface IDrawingSessionsDao
-    {
-        DrawingSessionDetail Find(Guid id);
-    }
-
-    public class DrawingSessionDetail
-    {
     }
 }
