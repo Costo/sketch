@@ -39,7 +39,8 @@ namespace Sketch.Core.EventHandlers
                 {
                     DrawingSessionId = @event.SourceId,
                     Duration = @event.Duration,
-                    ImageUrl = @event.ImageUrl
+                    ImageUrl = @event.ImageUrl,
+                    Order = @event.Order, 
                 });
 
                 context.SaveChanges();

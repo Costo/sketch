@@ -4,38 +4,62 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
+<style>
+    header {
+        overflow: hidden;
+    }
+    .img-container {
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-background-size: contain;
+        -moz-background-size: contain;
+        -o-background-size: contain;
+        background-size: contain;
+    }
+</style>
+<header>
+    <h1>@ViewBag.Title</h1>
+</header>
 <div class='row'>
     <div class='span12'>
-        <h1>@ViewBag.Title</h1>
         
         <div class="img-container"></div>
     </div>
 </div>
 @section scripts
 {
+    @{
+        var settings = new JsonSerializerSettings
+                           {
+                               ContractResolver = new DrawingSessionContractResolver()
+                           };
+        settings.Converters.Add(new TimeSpanJsonConverter());
+    }
     <script>
-        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos, new JsonSerializerSettings
-                                                                            {
-                                                                                ContractResolver = new DrawingSessionContractResolver()
-                                                                            }))
+        
+        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos, settings))
         window.Sketch = {
             photos: photos
         };
-        
+
+        resizePhoto();
+        $(window).on('resize', resizePhoto);
         showNextPhoto();
 
 
         function showNextPhoto() {
             var photo = Sketch.photos.shift();
-            
+
             if (photo) {
-                var $img = $('<img>').attr({
-                    src: photo.imageUrl
+
+                $('.img-container').css({
+                    backgroundImage: 'url(' + photo.imageUrl + ')',
                 });
-                $('.img-container').html($img);
                 setTimeout(showNextPhoto, photo.duration);
             }
+        }
+        function resizePhoto() {
+            $('.img-container').height( $(window).height() - $('header').height() );
         }
     </script>
 }

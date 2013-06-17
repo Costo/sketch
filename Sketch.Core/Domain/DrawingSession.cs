@@ -4,12 +4,13 @@ using Sketch.Core.Infrastructure;
 
 namespace Sketch.Core.Domain
 {
-    public partial class DrawingSession: AggregateRoot
+    public class DrawingSession: AggregateRoot
     {
+        private int photoCount = 0;
         public DrawingSession(Guid id):base(id)
         {
             this.Handles<DrawingSessionCreated>(NoOp);
-            this.Handles<DrawingSessionPhotoAdded>(NoOp);
+            this.Handles<DrawingSessionPhotoAdded>(OnDrawingSessionPhotoAdded);
 
             this.Update(new DrawingSessionCreated());
         }
@@ -19,8 +20,14 @@ namespace Sketch.Core.Domain
             this.Update(new DrawingSessionPhotoAdded
             {
                 ImageUrl = photoUrl,
-                Duration = duration
+                Duration = duration,
+                Order = photoCount,
             });
+        }
+
+        void OnDrawingSessionPhotoAdded(DrawingSessionPhotoAdded @event)
+        {
+            photoCount++;
         }
     }
 }

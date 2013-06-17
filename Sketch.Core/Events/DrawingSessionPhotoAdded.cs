@@ -8,5 +8,7 @@ namespace Sketch.Core.Events
         public string ImageUrl { get; set; }
 
         public TimeSpan Duration { get; set; }
+
+        public int Order { get; set; }
     }
 }

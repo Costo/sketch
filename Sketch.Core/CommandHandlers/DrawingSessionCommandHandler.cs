@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sketch.Core.Commands;
 using Sketch.Core.Domain;
@@ -9,8 +10,10 @@ namespace Sketch.Core.CommandHandlers
 {
     public class DrawingSessionCommandHandler: ICommandHandler<GenerateDrawingSession>
     {
-        private readonly IEventStore _store;
-        private readonly IStockPhotoDao _dao;
+        readonly IEventStore _store;
+        readonly IStockPhotoDao _dao;
+        readonly double[] timesInMinutes = new[] { 10, 5, 5, 2, 2, 2, 1, .75, .75, .75, .75 };
+
 
         public DrawingSessionCommandHandler(IEventStore store, IStockPhotoDao dao)
         {
@@ -22,10 +25,11 @@ namespace Sketch.Core.CommandHandlers
         {
             var drawingSession = new DrawingSession(command.DrawingSessionId);
 
-            var photos = _dao.GetRandomStockPhotos(10);
+            var photos = _dao.GetRandomStockPhotos(timesInMinutes.Length);
+            var timeSpans = new Stack<TimeSpan>(timesInMinutes.Select(TimeSpan.FromMinutes));
             foreach (var p in photos)
             {
-                drawingSession.AddPhoto(p.ImageUrl, TimeSpan.FromSeconds(10));
+                drawingSession.AddPhoto(p.ImageUrl, timeSpans.Pop());
             }
 
             _store.Save(drawingSession, command.Id.ToString());

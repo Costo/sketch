@@ -1,68 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 
 namespace Sketch.Web.Serialization
 {
-    public class TimeSpanJsonConverter: JavaScriptConverter
+    public class TimeSpanJsonConverter: JsonConverter
     {
-        public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            return new TimeSpan(
-            this.GetValue(dictionary, "days"),
-            this.GetValue(dictionary, "hours"),
-            this.GetValue(dictionary, "minutes"),
-            this.GetValue(dictionary, "seconds"),
-            this.GetValue(dictionary, "milliseconds"));
+            var timeSpan = (TimeSpan) value;
+            serializer.Serialize(writer, timeSpan.TotalMilliseconds);
         }
 
-        public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var timeSpan = (TimeSpan)obj;
-
-            var result = new Dictionary<string, object>
-            {
-                { "days", timeSpan.Days },
-                { "hours", timeSpan.Hours },
-                { "minutes", timeSpan.Minutes },
-                { "seconds", timeSpan.Seconds },
-                { "milliseconds", timeSpan.Milliseconds }
-            };
-
-            return result;
+            throw new NotImplementedException();
         }
 
-        public override IEnumerable<Type> SupportedTypes
+        public override bool CanConvert(Type objectType)
         {
-            get { return new[] { typeof(TimeSpan) }; ; }
-        }
-
-        private int GetValue(IDictionary<string, object> dictionary, string key)
-        {
-            const int DefaultValue = 0;
-
-            object value;
-            if (!dictionary.TryGetValue(key, out value))
-            {
-                return DefaultValue;
-            }
-
-            if (value is int)
-            {
-                return (int)value;
-            }
-
-            var valueString = value as string;
-            if (valueString == null)
-            {
-                return DefaultValue;
-            }
-
-            int returnValue;
-            return !int.TryParse(valueString, out returnValue) ? DefaultValue : returnValue;
+            return objectType == typeof (TimeSpan);
         }
     }
 }

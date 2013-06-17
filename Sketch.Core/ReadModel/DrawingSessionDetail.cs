@@ -24,5 +24,6 @@ namespace Sketch.Core.ReadModel
         [Key, Column(Order = 2)]
         public string ImageUrl { get; set; }
         public TimeSpan Duration { get; set; }
+        public int Order { get; set; }
     }
 }

@@ -88,6 +88,9 @@
   <ItemGroup>
     <EmbeddedResource Include="sample-deviant-art-page.html" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ReadModel\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

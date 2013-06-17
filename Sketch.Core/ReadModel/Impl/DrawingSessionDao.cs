@@ -17,9 +17,14 @@ namespace Sketch.Core.ReadModel.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<DrawingSessionDetail>()
+                var detail = context.Set<DrawingSessionDetail>()
                     .Include(x => x.Photos)
                     .SingleOrDefault(x=>x.Id == id);
+
+                if (detail == null) return null;
+
+                detail.Photos = detail.Photos.OrderBy(x => x.Order).ToList();
+                return detail;
             }
         }
     }
