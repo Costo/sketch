@@ -27,6 +27,12 @@ namespace Sketch.Web
                 .Include("~/Content/bootstrap.css")
                 .Include("~/Content/site.css"));
 
+
+            var lessBundle = new Bundle("~/Content/less")
+                .IncludeDirectory("~/Content", "*.less");
+            lessBundle.Transforms.Add(new LessTransform());
+            lessBundle.Transforms.Add(new CssMinify());
+            bundles.Add(lessBundle);
         }
     }
 }

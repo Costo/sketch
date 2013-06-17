@@ -5,24 +5,13 @@
     ViewBag.Title = "Home Page";
 }
 <style>
-    header {
-        overflow: hidden;
-    }
-    .img-container {
-        background-repeat: no-repeat;
-        background-position: center center;
-        -webkit-background-size: contain;
-        -moz-background-size: contain;
-        -o-background-size: contain;
-        background-size: contain;
-    }
+
 </style>
 <header>
     <h1>@ViewBag.Title</h1>
 </header>
 <div class='row'>
     <div class='span12'>
-        
         <div class="img-container"></div>
     </div>
 </div>
@@ -30,16 +19,15 @@
 {
     @{
         var settings = new JsonSerializerSettings
-                           {
-                               ContractResolver = new DrawingSessionContractResolver()
-                           };
+        {
+            ContractResolver = new DrawingSessionContractResolver()
+        };
         settings.Converters.Add(new TimeSpanJsonConverter());
     }
     <script>
         
-        var photos = @Html.Raw(JsonConvert.SerializeObject(Model.Photos, settings))
         window.Sketch = {
-            photos: photos
+            photos: @Html.Raw(JsonConvert.SerializeObject(Model.Photos, settings))
         };
 
         resizePhoto();
