@@ -8,5 +8,10 @@ namespace Sketch.Core.Infrastructure
         {
             return JsonConvert.SerializeObject(serializable);
         }
+
+        public T Deserialize<T>(string serialized)
+        {
+            return JsonConvert.DeserializeObject<T>(serialized);
+        }
     }
 }

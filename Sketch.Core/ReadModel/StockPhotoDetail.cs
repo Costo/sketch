@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sketch.Core.ReadModel
 {
-    [Table("StockPhotoDetail")]
+    [Table("StockPhotoDetail", Schema = "Sketch")]
     public class StockPhotoDetail
     {
         [Key]

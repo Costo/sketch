@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Sketch.Core.Infrastructure.Storage
 {
-    public class SqlEventStore: IEventStore
+    public class SqlEventStore : IEventStore, IAdvancedEventStore
     {
         readonly ITextSerializer _serializer;
         readonly IEventBus _eventBus;
@@ -32,11 +34,27 @@ namespace Sketch.Core.Infrastructure.Storage
             }
             _eventBus.Publish(events: eventSourced.Events);
         }
-    }
 
-    public interface IEventBus
-    {
-        void Publish(IEvent @event);
-        void Publish(IEnumerable<IEvent> events);
+        public IAdvancedEventStore Advanced
+        {
+            get { return this; }
+        }
+
+        void IAdvancedEventStore.ReplayEvents()
+        {
+            using (var context = new EventStoreDbContext())
+            {
+                foreach (var @event in context.Events.OrderBy(x=>x.AggregateId).ThenBy(x=>x.Version))
+                {
+                    var deserializeMethod = _serializer.GetType()
+                        .GetMethod("Deserialize", BindingFlags.Instance | BindingFlags.Public)
+                        .MakeGenericMethod(Type.GetType(@event.EventType));
+
+                    var payload = (IEvent)deserializeMethod.Invoke(_serializer, new [] { @event.Payload });
+                    _eventBus.Publish(payload);
+
+                }
+            }
+        }
     }
 }

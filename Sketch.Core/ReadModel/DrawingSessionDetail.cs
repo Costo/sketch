@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sketch.Core.ReadModel
 {
-    [Table("DrawingSessionDetail")]
+    [Table("DrawingSessionDetail", Schema = "Sketch")]
     public class DrawingSessionDetail
     {
         [Key]
@@ -14,7 +14,7 @@ namespace Sketch.Core.ReadModel
 
     }
 
-    [Table("DrawingSessionPhoto")]
+    [Table("DrawingSessionPhoto", Schema = "Sketch")]
     public class DrawingSessionPhoto
     {
         [Key, Column(Order = 1)]

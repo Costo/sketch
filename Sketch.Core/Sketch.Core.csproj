@@ -73,6 +73,7 @@
     <Compile Include="EventHandlers\StockPhotoDenormalizer.cs" />
     <Compile Include="Events\StockPhotoCreated.cs" />
     <Compile Include="Infrastructure\ICommandHandlerRegistry.cs" />
+    <Compile Include="Infrastructure\IEventBus.cs" />
     <Compile Include="Infrastructure\IEventHandler.cs" />
     <Compile Include="Infrastructure\IEventHandlerRegistry.cs" />
     <Compile Include="Infrastructure\InMemoryCommandBus.cs" />

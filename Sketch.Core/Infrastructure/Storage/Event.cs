@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sketch.Core.Infrastructure.Storage
 {
+    [Table("Events", Schema = "Events")]
     public class Event
     {
         [Key, Column(Order = 1)]
