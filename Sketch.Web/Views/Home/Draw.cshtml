@@ -1,14 +1,15 @@
 ﻿@using Newtonsoft.Json
 @using Sketch.Web.Serialization
 @model  Sketch.Core.ReadModel.DrawingSessionDetail
-@{
-    ViewBag.Title = "Home Page";
-}
+
 <style>
 
 </style>
 <header>
-    <h1>@ViewBag.Title</h1>
+    <h1>Stock photo 1/10</h1>
+    <span class='remaining-time'>
+        <span class='minutes'></span>:<span class='seconds'></span>
+    </span>
 </header>
 <div class='row'>
     <div class='span12'>
@@ -19,13 +20,13 @@
 {
     @{
         var settings = new JsonSerializerSettings
-        {
-            ContractResolver = new DrawingSessionContractResolver()
-        };
+                           {
+                               ContractResolver = new DrawingSessionContractResolver()
+                           };
         settings.Converters.Add(new TimeSpanJsonConverter());
     }
     <script>
-        
+
         window.Sketch = {
             photos: @Html.Raw(JsonConvert.SerializeObject(Model.Photos, settings))
         };
@@ -34,7 +35,7 @@
         $(window).on('resize', resizePhoto);
         showNextPhoto();
 
-
+        
         function showNextPhoto() {
             var photo = Sketch.photos.shift();
 
@@ -43,11 +44,22 @@
                 $('.img-container').css({
                     backgroundImage: 'url(' + photo.imageUrl + ')',
                 });
+                var timeout = new Date().getTime() + photo.duration;
+                clearInterval(window.Sketch.timer);
+                window.Sketch.timer = setInterval(function() {
+                    var timeLeft = timeout - new Date().getTime();
+                    var minutes = Math.floor(timeLeft / 1000 / 60);
+                    var seconds = Math.floor(timeLeft / 1000 - minutes * 60);
+                    $('.remaining-time .minutes').text(minutes);
+                    $('.remaining-time .seconds').text(seconds);
+                }, 100);
+                
                 setTimeout(showNextPhoto, photo.duration);
             }
         }
+
         function resizePhoto() {
-            $('.img-container').height( $(window).height() - $('header').height() );
+            $('.img-container').height($(window).height() - $('header').height());
         }
     </script>
 }
