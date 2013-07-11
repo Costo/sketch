@@ -2,13 +2,10 @@
 @using Sketch.Web.Serialization
 @model  Sketch.Core.ReadModel.DrawingSessionDetail
 
-<style>
-
-</style>
-<header>
-    <h1>Stock photo 1/10</h1>
-    <span class='remaining-time'>
-        <span class='minutes'></span>:<span class='seconds'></span>
+<header ng-app ng-controller='CounterCtrl'>
+    <h1>Stock photo {{elapsed.length}}/{{photos.length + elapsed.length}}</h1>
+    <span>
+        <span>{{minutes}}</span>:<span>{{seconds}}</span>
     </span>
 </header>
 <div class='row'>
@@ -33,33 +30,43 @@
 
         resizePhoto();
         $(window).on('resize', resizePhoto);
-        showNextPhoto();
 
-        
-        function showNextPhoto() {
-            var photo = Sketch.photos.shift();
-
-            if (photo) {
-
-                $('.img-container').css({
-                    backgroundImage: 'url(' + photo.imageUrl + ')',
-                });
-                var timeout = new Date().getTime() + photo.duration;
-                clearInterval(window.Sketch.timer);
-                window.Sketch.timer = setInterval(function() {
-                    var timeLeft = timeout - new Date().getTime();
-                    var minutes = Math.floor(timeLeft / 1000 / 60);
-                    var seconds = Math.floor(timeLeft / 1000 - minutes * 60);
-                    $('.remaining-time .minutes').text(minutes);
-                    $('.remaining-time .seconds').text(seconds);
-                }, 100);
-                
-                setTimeout(showNextPhoto, photo.duration);
-            }
-        }
 
         function resizePhoto() {
             $('.img-container').height($(window).height() - $('header').height());
+        }
+
+        function CounterCtrl($scope) {
+            $scope.photos = window.Sketch.photos;
+            $scope.elapsed = [];
+            $scope.minutes = 0;
+            $scope.seconds = 0;
+            showNextPhoto();
+
+            function showNextPhoto() {
+                var photo = $scope.photos.shift();
+                if (photo) {
+                    $scope.elapsed.push(photo);
+
+                    $('.img-container').css({
+                        backgroundImage: 'url(' + photo.imageUrl + ')',
+                    });
+                    var timeLeft = photo.duration;
+                    var currentTime = new Date().getTime();
+                    clearInterval($scope.timer);
+                    $scope.timer = setInterval(function() {
+                        $scope.$apply(function() {
+                            var previousTime = currentTime;
+                            currentTime = new Date().getTime();
+                            timeLeft = timeLeft - currentTime + previousTime;
+                            $scope.minutes = Math.floor(timeLeft / 1000 / 60);
+                            $scope.seconds = Math.floor(timeLeft / 1000 - $scope.minutes * 60);
+                        });
+                    }, 100);
+
+                    setTimeout(showNextPhoto, photo.duration);
+                }
+            }
         }
     </script>
 }
