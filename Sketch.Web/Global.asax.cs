@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -9,6 +11,8 @@ using System.Web.Routing;
 using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Sketch.Core.Database;
+using Sketch.Core.Infrastructure.Storage;
 
 namespace Sketch.Web
 {
@@ -36,6 +40,19 @@ namespace Sketch.Web
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+
+            Database.SetInitializer<SketchDbContext>(null);
+            Database.SetInitializer<EventStoreDbContext>(null);
+            using (var sketchDbContext = new SketchDbContext())
+            using (var eventStoreDbContext = new EventStoreDbContext())
+            {
+                if (!sketchDbContext.Database.Exists())
+                {
+                    ((IObjectContextAdapter)sketchDbContext).ObjectContext.CreateDatabase();
+
+                    eventStoreDbContext.Database.ExecuteSqlCommand(((IObjectContextAdapter)eventStoreDbContext).ObjectContext.CreateDatabaseScript());
+                }
+            }
                 
         }
     }
