@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Core", "Sketch.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.EventStoreUtility", "Sketch.EventStoreUtility\Sketch.EventStoreUtility.csproj", "{5AAD4A2B-5B21-4A78-9922-01F3E5B10385}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Sketch.Cloud", "Sketch.Cloud\Sketch.Cloud.ccproj", "{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{5AAD4A2B-5B21-4A78-9922-01F3E5B10385}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AAD4A2B-5B21-4A78-9922-01F3E5B10385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AAD4A2B-5B21-4A78-9922-01F3E5B10385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

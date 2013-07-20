@@ -5,7 +5,7 @@ namespace Sketch.Core.Infrastructure.Storage
     public class EventStoreDbContext: DbContext
     {
         public EventStoreDbContext()
-            : base("DefaultConnection")
+            : base("EventStore")
         {
         }
 

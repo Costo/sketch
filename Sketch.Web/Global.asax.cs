@@ -41,6 +41,7 @@ namespace Sketch.Web
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
+            Database.DefaultConnectionFactory = new ConnectionFactory(Database.DefaultConnectionFactory);
             Database.SetInitializer<SketchDbContext>(null);
             Database.SetInitializer<EventStoreDbContext>(null);
             using (var sketchDbContext = new SketchDbContext())

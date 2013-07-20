@@ -47,11 +47,13 @@
     <Reference Include="Microsoft.Practices.Unity.Configuration">
       <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +68,7 @@
     <Compile Include="CommandHandlers\StockPhotoCommandHandler.cs" />
     <Compile Include="Commands\GenerateDrawingSession.cs" />
     <Compile Include="Commands\ImportStockPhoto.cs" />
+    <Compile Include="Database\ConnectionFactory.cs" />
     <Compile Include="Database\SketchDbContext.cs" />
     <Compile Include="Domain\DrawingSession.cs" />
     <Compile Include="Domain\StockPhoto.cs" />
