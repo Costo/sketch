@@ -8,7 +8,9 @@ using Sketch.Core.ReadModel;
 
 namespace Sketch.Core.CommandHandlers
 {
-    public class DrawingSessionCommandHandler: ICommandHandler<GenerateDrawingSession>
+    public class DrawingSessionCommandHandler:
+        ICommandHandler<GenerateDrawingSession>,
+        ICommandHandler<ReplaceDrawingSessionPhoto>
     {
         readonly IEventStore _store;
         readonly IStockPhotoDao _dao;
@@ -31,6 +33,17 @@ namespace Sketch.Core.CommandHandlers
             {
                 drawingSession.AddPhoto(p.ImageUrl, timeSpans.Pop());
             }
+
+            _store.Save(drawingSession, command.Id.ToString());
+        }
+
+        public void Handle(ReplaceDrawingSessionPhoto command)
+        {
+            var drawingSession = _store.Get<DrawingSession>(command.DrawingSessionId);
+            
+            var photo = _dao.GetRandomStockPhotos(1).Single();
+
+            drawingSession.ReplacePhoto(command.IndexOfPhotoToReplace, photo.ImageUrl);
 
             _store.Save(drawingSession, command.Id.ToString());
         }

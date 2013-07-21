@@ -1,15 +1,19 @@
 ﻿@using Newtonsoft.Json
 @using Sketch.Web.Serialization
-@model  Sketch.Core.ReadModel.DrawingSessionDetail
+@model  Sketch.Web.Models.DrawingSessionPhotoViewModel
 
 <header ng-app ng-controller='CounterCtrl'>
-    <h1>Stock photo {{elapsed.length}}/{{photos.length + elapsed.length}}</h1>
+    <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
     <span>
         <span>{{minutes}}</span>:<span>{{seconds}}</span>
     </span>
 </header>
 <div class='row'>
     <div class='span12'>
+        @using (Html.BeginForm("Replace", "Home", new { id= Model.DrawingSessionId, index = Model.IndexOfPhoto } ))
+        {
+            <button type="submit" class='btn'>Replace</button>
+        }
         <div class="img-container"></div>
     </div>
 </div>
@@ -24,10 +28,6 @@
     }
     <script>
 
-        window.Sketch = {
-            photos: @Html.Raw(JsonConvert.SerializeObject(Model.Photos, settings))
-        };
-
         resizePhoto();
         $(window).on('resize', resizePhoto);
 
@@ -37,35 +37,34 @@
         }
 
         function CounterCtrl($scope) {
-            $scope.photos = window.Sketch.photos;
-            $scope.elapsed = [];
             $scope.minutes = 0;
-            $scope.seconds = 0;
+            $scope.seconds = '00';
+
             showNextPhoto();
 
             function showNextPhoto() {
-                var photo = $scope.photos.shift();
-                if (photo) {
-                    $scope.elapsed.push(photo);
 
-                    $('.img-container').css({
-                        backgroundImage: 'url(' + photo.imageUrl + ')',
+                $('.img-container').css({
+                    backgroundImage: 'url(@Model.ImageUrl)',
+                });
+                var timeLeft = @Model.DurationInMilliseconds;
+                var currentTime = new Date().getTime();
+                clearInterval($scope.timer);
+                $scope.timer = setInterval(function() {
+                    $scope.$apply(function() {
+                        var previousTime = currentTime;
+                        currentTime = new Date().getTime();
+                        timeLeft = timeLeft - currentTime + previousTime;
+                        $scope.minutes = Math.floor(timeLeft / 1000 / 60);
+                        var s = Math.floor(timeLeft / 1000 - $scope.minutes * 60);
+                        if ((s + '').length <= 1) s = '0' + s;
+                        $scope.seconds = s;
                     });
-                    var timeLeft = photo.duration;
-                    var currentTime = new Date().getTime();
-                    clearInterval($scope.timer);
-                    $scope.timer = setInterval(function() {
-                        $scope.$apply(function() {
-                            var previousTime = currentTime;
-                            currentTime = new Date().getTime();
-                            timeLeft = timeLeft - currentTime + previousTime;
-                            $scope.minutes = Math.floor(timeLeft / 1000 / 60);
-                            $scope.seconds = Math.floor(timeLeft / 1000 - $scope.minutes * 60);
-                        });
-                    }, 100);
+                }, 100);
 
-                    setTimeout(showNextPhoto, photo.duration);
-                }
+                setTimeout(function() {
+                    window.location.href = '@Model.NextPageUrl';
+                }, @Model.DurationInMilliseconds);
             }
         }
     </script>

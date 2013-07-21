@@ -68,12 +68,14 @@
     <Compile Include="CommandHandlers\StockPhotoCommandHandler.cs" />
     <Compile Include="Commands\GenerateDrawingSession.cs" />
     <Compile Include="Commands\ImportStockPhoto.cs" />
+    <Compile Include="Commands\ReplaceDrawingSessionPhoto.cs" />
     <Compile Include="Database\ConnectionFactory.cs" />
     <Compile Include="Database\SketchDbContext.cs" />
     <Compile Include="Domain\DrawingSession.cs" />
     <Compile Include="Domain\StockPhoto.cs" />
     <Compile Include="EventHandlers\DrawingSessionDenormalizer.cs" />
     <Compile Include="EventHandlers\StockPhotoDenormalizer.cs" />
+    <Compile Include="Events\DrawingSessionPhotoReplaced.cs" />
     <Compile Include="Events\StockPhotoCreated.cs" />
     <Compile Include="Infrastructure\ICommandHandlerRegistry.cs" />
     <Compile Include="Infrastructure\IEventBus.cs" />

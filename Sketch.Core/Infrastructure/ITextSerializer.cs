@@ -6,5 +6,6 @@ namespace Sketch.Core.Infrastructure
     {
         string Serialize<T>(T serializable);
         T Deserialize<T>(string payload);
+        object Deserialize(string payload, Type type);
     }
 }

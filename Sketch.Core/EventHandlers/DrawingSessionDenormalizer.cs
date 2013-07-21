@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using Sketch.Core.Events;
 using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
@@ -8,7 +9,8 @@ namespace Sketch.Core.EventHandlers
 {
     public class DrawingSessionDenormalizer: 
         IEventHandler<DrawingSessionCreated>,
-        IEventHandler<DrawingSessionPhotoAdded>
+        IEventHandler<DrawingSessionPhotoAdded>,
+        IEventHandler<DrawingSessionPhotoReplaced>
     {
         readonly Func<DbContext> _contextFactory;
 
@@ -41,6 +43,26 @@ namespace Sketch.Core.EventHandlers
                     Duration = @event.Duration,
                     ImageUrl = @event.ImageUrl,
                     Order = @event.Order, 
+                });
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(DrawingSessionPhotoReplaced @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var drawingSession = context.Set<DrawingSessionDetail>().Find(@event.SourceId);
+
+                var photo = drawingSession.Photos.Single(x => x.Order == @event.IndexOfPhoto);
+                drawingSession.Photos.Remove(photo);
+                drawingSession.Photos.Add(new DrawingSessionPhoto
+                {
+                    DrawingSessionId = @event.SourceId,
+                    Duration = photo.Duration,
+                    ImageUrl = @event.NewImageUrl,
+                    Order = photo.Order,
                 });
 
                 context.SaveChanges();

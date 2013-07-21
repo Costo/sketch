@@ -9,6 +9,13 @@ namespace Sketch.Core.Events
 
         public TimeSpan Duration { get; set; }
 
-        public int Order { get; set; }
+        public int Index { get; set; }
+
+        [Obsolete]
+        public int Order {
+            get { return Index; }
+            set { Index = value; }
+        }
+
     }
 }

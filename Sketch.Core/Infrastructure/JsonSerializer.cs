@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Sketch.Core.Infrastructure
 {
@@ -12,6 +13,11 @@ namespace Sketch.Core.Infrastructure
         public T Deserialize<T>(string serialized)
         {
             return JsonConvert.DeserializeObject<T>(serialized);
+        }
+
+        public object Deserialize(string serialized, Type type)
+        {
+            return JsonConvert.DeserializeObject(serialized, type);
         }
     }
 }

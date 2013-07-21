@@ -35,6 +35,27 @@ namespace Sketch.Core.Infrastructure.Storage
             _eventBus.Publish(events: eventSourced.Events);
         }
 
+        public T Get<T>(Guid id) where T : IEventSourced
+        {
+            using (var context = new EventStoreDbContext())
+            {
+                var events = context.Set<Event>()
+                                    .Where(x => x.AggregateId == id)
+                                    .OrderBy(x => x.Version)
+                                    .ToArray()
+                                    .Select(x => _serializer.Deserialize(x.Payload, Type.GetType(x.EventType)))
+                                    .Cast<IEvent>()
+                                    .ToArray();
+
+                if (!events.Any())
+                {
+                    throw new InvalidOperationException("Aggregate no found: " + id);
+                }
+
+                return (T)Activator.CreateInstance(typeof(T), new object[] { id, events });
+            }
+        }
+
         public IAdvancedEventStore Advanced
         {
             get { return this; }
@@ -46,13 +67,8 @@ namespace Sketch.Core.Infrastructure.Storage
             {
                 foreach (var @event in context.Events.OrderBy(x=>x.AggregateId).ThenBy(x=>x.Version))
                 {
-                    var deserializeMethod = _serializer.GetType()
-                        .GetMethod("Deserialize", BindingFlags.Instance | BindingFlags.Public)
-                        .MakeGenericMethod(Type.GetType(@event.EventType));
-
-                    var payload = (IEvent)deserializeMethod.Invoke(_serializer, new [] { @event.Payload });
+                    var payload = (IEvent)_serializer.Deserialize(@event.Payload, Type.GetType(@event.EventType));
                     _eventBus.Publish(payload);
-
                 }
             }
         }

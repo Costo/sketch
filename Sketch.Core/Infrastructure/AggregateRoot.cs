@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Sketch.Core.CommandHandlers;
 
 namespace Sketch.Core.Infrastructure
 {
@@ -37,6 +36,15 @@ namespace Sketch.Core.Infrastructure
             _handlers[@event.GetType()].Invoke(@event);
             _version = @event.Version;
             this.Events.Add(@event);
+        }
+
+        protected void LoadFrom(IEnumerable<IEvent> pastEvents)
+        {
+            foreach (var e in pastEvents)
+            {
+                _handlers[e.GetType()].Invoke(e);
+                _version = e.Version;
+            }
         }
     }
 }

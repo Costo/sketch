@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
-using AutoMapper;
 using Sketch.Core.Commands;
 using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
@@ -36,25 +36,41 @@ namespace Sketch.Web.Controllers
             return RedirectToAction("Draw", new { Id = drawingSessionId });
         }
 
-        public ActionResult Draw(Guid id)
+        public ActionResult Draw(Guid id, int? index)
         {
-            var model = _dao.Find(id);
+            var session = _dao.Find(id);
+            if (session == null) return HttpNotFound();
 
-            return View(model);
+            var photo = session.Photos.SingleOrDefault(x => x.Order == index.GetValueOrDefault());
+            if (photo == null) return HttpNotFound();
+
+
+
+            return View(new DrawingSessionPhotoViewModel
+                            {
+                                DrawingSessionId = id,
+                                DurationInMilliseconds = (int)photo.Duration.TotalMilliseconds,
+                                ImageUrl = photo.ImageUrl,
+                                NumberOfElapsedPhotos = index.GetValueOrDefault(),
+                                NumberOfRemaningPhotos = session.Photos.Count - index.GetValueOrDefault(),
+                                NextPageUrl = Url.Action("Draw", new
+                                                                     {
+                                                                         id,
+                                                                         index= ++index
+                                                                     })
+                            });
         }
 
-        public ActionResult About()
+
+        public ActionResult Replace(Guid id, int index)
         {
-            ViewBag.Message = "Your app description page.";
+            _commandBus.Send(new ReplaceDrawingSessionPhoto
+            {
+                DrawingSessionId = id,
+                IndexOfPhotoToReplace = index,
+            });
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return RedirectToAction("Draw", new { Id = id, index = index });
         }
     }
 }
