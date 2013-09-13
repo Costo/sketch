@@ -2,7 +2,7 @@
 @using Sketch.Web.Serialization
 @model  Sketch.Web.Models.DrawingSessionPhotoViewModel
 
-<header ng-app ng-controller='CounterCtrl'>
+<header ng-controller='CounterCtrl' >
     <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
     <span>
         <span>{{minutes}}</span>:<span>{{seconds}}</span>
@@ -41,6 +41,13 @@
             $scope.seconds = '00';
 
             showNextPhoto();
+
+            $scope.$on('my:keypress', function(event, keyboardEvent) {
+                if (keyboardEvent.charCode === 32 /*space bar*/) {
+                    event.preventDefault();
+                    clearInterval($scope.timer);                    
+                }
+            });
 
             function showNextPhoto() {
 
