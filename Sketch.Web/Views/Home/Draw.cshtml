@@ -1,20 +1,22 @@
 ﻿@using Newtonsoft.Json
 @using Sketch.Web.Serialization
 @model  Sketch.Web.Models.DrawingSessionPhotoViewModel
-
-<header ng-controller='CounterCtrl' >
-    <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
-    <span>
-        <span>{{minutes}}</span>:<span>{{seconds}}</span>
-    </span>
-</header>
-<div class='row'>
-    <div class='span12'>
+<div>
+    <header ng-init='nextPageUrl = "@Model.NextPageUrl"' ng-controller='PhotoCtrl'>
+        <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
+        <span ng-init='timeLeft = @Model.DurationInMilliseconds' ng-controller='TimerCtrl'>
+            <span>{{minutes}}</span>:<span>{{seconds}}</span>
+        </span>
         @using (Html.BeginForm("Replace", "Home", new { id= Model.DrawingSessionId, index = Model.IndexOfPhoto } ))
         {
             <button type="submit" class='btn'>Replace</button>
         }
-        <div class="img-container"></div>
+    </header>
+    <div class='row'>
+        <div class='span12'>
+            
+            <div class="img-container" style='background: url(@Model.ImageUrl) 50% 50% no-repeat; background-size: contain'></div>
+        </div>
     </div>
 </div>
 @section scripts
@@ -36,42 +38,56 @@
             $('.img-container').height($(window).height() - $('header').height());
         }
 
-        function CounterCtrl($scope) {
-            $scope.minutes = 0;
-            $scope.seconds = '00';
+        function PhotoCtrl($scope) {
+            $scope.nextPageUrl = '';
 
-            showNextPhoto();
+            $scope.$on('my:timerElapsed', function () {
+                window.location.href = $scope.nextPageUrl;
+            });
+
+        }
+
+        function TimerCtrl($scope) {
+            var spaceBarHitCount = 0;
+            
+            $scope.timeLeft = 0;
 
             $scope.$on('my:keypress', function(event, keyboardEvent) {
                 if (keyboardEvent.charCode === 32 /*space bar*/) {
                     event.preventDefault();
-                    clearInterval($scope.timer);                    
+                    if (++spaceBarHitCount % 2 == 0) {
+                        startTimer();
+                    } else {
+                        stopTimer();
+                    }
                 }
             });
 
-            function showNextPhoto() {
-
-                $('.img-container').css({
-                    backgroundImage: 'url(@Model.ImageUrl)',
-                });
-                var timeLeft = @Model.DurationInMilliseconds;
+            startTimer();
+            
+            function startTimer() {
                 var currentTime = new Date().getTime();
-                clearInterval($scope.timer);
-                $scope.timer = setInterval(function() {
-                    $scope.$apply(function() {
+                $scope.timer = setInterval(function () {
+                    $scope.$apply(function () {
                         var previousTime = currentTime;
                         currentTime = new Date().getTime();
-                        timeLeft = timeLeft - currentTime + previousTime;
-                        $scope.minutes = Math.floor(timeLeft / 1000 / 60);
-                        var s = Math.floor(timeLeft / 1000 - $scope.minutes * 60);
+                        $scope.timeLeft = Math.max($scope.timeLeft - currentTime + previousTime, 0);
+                        if ($scope.timeLeft === 0) {
+                            clearInterval($scope.timer);
+                            $scope.$emit('my:timerElapsed');
+                        }
+
+                        $scope.minutes = Math.floor($scope.timeLeft / 1000 / 60);
+                        var s = Math.floor($scope.timeLeft / 1000 - $scope.minutes * 60);
                         if ((s + '').length <= 1) s = '0' + s;
                         $scope.seconds = s;
                     });
                 }, 100);
-
-                setTimeout(function() {
-                    window.location.href = '@Model.NextPageUrl';
-                }, @Model.DurationInMilliseconds);
+            }
+            
+            function stopTimer()
+            {
+                clearInterval($scope.timer);
             }
         }
     </script>
