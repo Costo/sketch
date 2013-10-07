@@ -24,7 +24,7 @@ namespace Sketch.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css")
-                .Include("~/Content/bootstrap.css")
+                .Include("~/Content/bootstrap/bootstrap.css")
                 .Include("~/Content/site.css"));
 
 
