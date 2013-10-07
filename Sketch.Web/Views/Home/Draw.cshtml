@@ -1,20 +1,8 @@
 ﻿@using Newtonsoft.Json
 @using Sketch.Web.Serialization
 @model  Sketch.Web.Models.DrawingSessionPhotoViewModel
-<div>
-    <header ng-init='nextPageUrl = "@Model.NextPageUrl"' ng-controller='PhotoCtrl'>
-        <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
-        <div class="progress">
-          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: @Model.PercentageOfCompletion%">
-          </div>
-        </div>
-        <span ng-init='timeLeft = @Model.DurationInMilliseconds' ng-controller='TimerCtrl'>
-            <span>{{minutes}}</span>:<span>{{seconds}}</span>
-        </span>
-        @using (Html.BeginForm("Replace", "Home", new { id= Model.DrawingSessionId, index = Model.IndexOfPhoto } ))
-        {
-            <button type="submit" class='btn'>Replace</button>
-        }
+<div  ng-init='nextPageUrl = "@Model.NextPageUrl"' ng-controller='PhotoCtrl'>
+    <header>
     </header>
     <div class='row'>
         <div class='col-md-12'>
@@ -23,6 +11,36 @@
         </div>
     </div>
 </div>
+@section footer
+{
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    @using (Html.BeginForm("Replace", "Home", new { id= Model.DrawingSessionId, index = Model.IndexOfPhoto } ))
+                    {
+                        <button type="submit" class='btn btn-default'>Replace</button>
+                    }
+                </div>
+                <div class="col-md-1">
+                    <p ng-init='timeLeft = @Model.DurationInMilliseconds' ng-controller='TimerCtrl'>
+                        <span>{{minutes}}</span>:<span>{{seconds}}</span>
+                    </p>
+                </div>
+                
+                <div class="col-md-2">
+                    <p>Photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: @Model.PercentageOfCompletion%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+}
 @section scripts
 {
     @{
@@ -39,7 +57,7 @@
 
 
         function resizePhoto() {
-            $('.img-container').height($(window).height() - $('header').height());
+            $('.img-container').height($(window).height() - $('header').height() - $('footer').height());
         }
 
         function PhotoCtrl($scope) {
