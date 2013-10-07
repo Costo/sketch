@@ -4,6 +4,10 @@
 <div>
     <header ng-init='nextPageUrl = "@Model.NextPageUrl"' ng-controller='PhotoCtrl'>
         <h1>Stock photo @(Model.NumberOfElapsedPhotos + 1)/@Model.TotalNumberOfPhotos</h1>
+        <div class="progress">
+          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: @Model.PercentageOfCompletion%">
+          </div>
+        </div>
         <span ng-init='timeLeft = @Model.DurationInMilliseconds' ng-controller='TimerCtrl'>
             <span>{{minutes}}</span>:<span>{{seconds}}</span>
         </span>

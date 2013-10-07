@@ -36,12 +36,12 @@ namespace Sketch.Web.Controllers
             return RedirectToAction("Draw", new { Id = drawingSessionId });
         }
 
-        public ActionResult Draw(Guid id, int? index)
+        public ActionResult Draw(Guid id, int index=0)
         {
             var session = _dao.Find(id);
             if (session == null) return HttpNotFound();
 
-            var photo = session.Photos.SingleOrDefault(x => x.Order == index.GetValueOrDefault());
+            var photo = session.Photos.SingleOrDefault(x => x.Order == index);
             if (photo == null) return HttpNotFound();
 
 
@@ -51,8 +51,8 @@ namespace Sketch.Web.Controllers
                                 DrawingSessionId = id,
                                 DurationInMilliseconds = (int)photo.Duration.TotalMilliseconds,
                                 ImageUrl = photo.ImageUrl,
-                                NumberOfElapsedPhotos = index.GetValueOrDefault(),
-                                NumberOfRemaningPhotos = session.Photos.Count - index.GetValueOrDefault(),
+                                NumberOfElapsedPhotos = index,
+                                NumberOfRemaningPhotos = session.Photos.Count - index,
                                 NextPageUrl = Url.Action("Draw", new
                                                                      {
                                                                          id,

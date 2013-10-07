@@ -21,6 +21,11 @@ namespace Sketch.Web.Models
         {
             get { return NumberOfElapsedPhotos; }
         }
+        public double PercentageOfCompletion
+        {
+            get { return Math.Max(1.0, (double)NumberOfElapsedPhotos/TotalNumberOfPhotos*100); }
+        }
+
         public string NextPageUrl { get; set; }
     }
 }
