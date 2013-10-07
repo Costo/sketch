@@ -69,7 +69,7 @@
 
         }
 
-        function TimerCtrl($scope) {
+        function TimerCtrl($scope, $rootScope) {
             var spaceBarHitCount = 0;
             
             $scope.timeLeft = 0;
@@ -96,7 +96,7 @@
                         $scope.timeLeft = Math.max($scope.timeLeft - currentTime + previousTime, 0);
                         if ($scope.timeLeft === 0) {
                             clearInterval($scope.timer);
-                            $scope.$emit('my:timerElapsed');
+                            $rootScope.$broadcast('my:timerElapsed');
                         }
 
                         $scope.minutes = Math.floor($scope.timeLeft / 1000 / 60);
