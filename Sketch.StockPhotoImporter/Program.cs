@@ -50,6 +50,7 @@ namespace Sketch.StockPhotoImporter
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
+            Database.DefaultConnectionFactory = new ConnectionFactory(Database.DefaultConnectionFactory);
             Database.SetInitializer<SketchDbContext>(null);
             Database.SetInitializer<EventStoreDbContext>(null);
             using (var sketchDbContext = new SketchDbContext())
