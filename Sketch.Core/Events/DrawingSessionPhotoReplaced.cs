@@ -1,10 +1,12 @@
 using Sketch.Core.Infrastructure;
+using System;
 
 namespace Sketch.Core.Events
 {
     public class DrawingSessionPhotoReplaced : DomainEvent
     {
-        public string NewImageUrl { get; set; }
+        public Guid NewStockPhotoId { get; set; }
+        public string NewPageUrl { get; set; }
         public int IndexOfPhoto { get; set; }
     }
 }

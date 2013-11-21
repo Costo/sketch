@@ -11,9 +11,12 @@ namespace Sketch.Core
             this.CreateMap<FeedItem, ImportStockPhoto>()
                 .ForMember(x => x.Id, opt=>opt.Ignore())
                 .ForMember(x => x.StockPhotoId, opt => opt.Ignore())
+                .ForMember(x => x.UniqueId, opt => opt.MapFrom(x => x.Guid))
                 .ForMember(x => x.ImageUrl, opt => opt.MapFrom(x => x.Content))
                 .ForMember(x => x.Title, opt => opt.MapFrom(x => x.Title))
                 .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
+                .ForMember(x => x.Rating, opt => opt.MapFrom(x => x.Rating))
+                .ForMember(x => x.Category, opt => opt.MapFrom(x => x.Category))
                 .ForMember(x => x.PageUrl, opt => opt.MapFrom(x => x.Link))
                 .ForMember(x => x.PublishedDate, opt => opt.MapFrom(x => x.PubDate));
         }

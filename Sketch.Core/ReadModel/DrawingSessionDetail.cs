@@ -22,7 +22,8 @@ namespace Sketch.Core.ReadModel
         public DrawingSessionDetail DrawingSession { get; set; }
 
         [Key, Column(Order = 2)]
-        public string ImageUrl { get; set; }
+        public Guid StockPhotoId { get; set; }
+        public string PageUrl { get; set; }
         public TimeSpan Duration { get; set; }
         public int Order { get; set; }
     }

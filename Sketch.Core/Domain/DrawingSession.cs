@@ -26,22 +26,24 @@ namespace Sketch.Core.Domain
             }
         }
 
-        public void AddPhoto(string photoUrl, TimeSpan duration)
+        public void AddPhoto(Guid stockPhotoId, string pageUrl, TimeSpan duration)
         {
             this.Update(new DrawingSessionPhotoAdded
             {
-                ImageUrl = photoUrl,
+                StockPhotoId = stockPhotoId,
+                PageUrl = pageUrl,
                 Duration = duration,
                 Index = photoCount,
             });
         }
 
-        public void ReplacePhoto(int indexOfPhoto, string newPhotoUrl)
+        public void ReplacePhoto(int indexOfPhoto, Guid newStockPhotoId, string newPageUrl)
         {
             this.Update(new DrawingSessionPhotoReplaced
             {
                 IndexOfPhoto = indexOfPhoto,
-                NewImageUrl = newPhotoUrl,
+                NewStockPhotoId = newStockPhotoId,
+                NewPageUrl = newPageUrl,
             });
         }
 

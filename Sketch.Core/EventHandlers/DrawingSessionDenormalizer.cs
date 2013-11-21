@@ -40,9 +40,10 @@ namespace Sketch.Core.EventHandlers
                 drawingSession.Photos.Add(new DrawingSessionPhoto
                 {
                     DrawingSessionId = @event.SourceId,
+                    StockPhotoId = @event.StockPhotoId,
                     Duration = @event.Duration,
-                    ImageUrl = @event.ImageUrl,
-                    Order = @event.Order, 
+                    PageUrl = @event.PageUrl,
+                    Order = @event.Index,
                 });
 
                 context.SaveChanges();
@@ -60,8 +61,9 @@ namespace Sketch.Core.EventHandlers
                 drawingSession.Photos.Add(new DrawingSessionPhoto
                 {
                     DrawingSessionId = @event.SourceId,
+                    StockPhotoId = @event.NewStockPhotoId,
+                    PageUrl = @event.NewPageUrl,
                     Duration = photo.Duration,
-                    ImageUrl = @event.NewImageUrl,
                     Order = photo.Order,
                 });
 

@@ -19,9 +19,9 @@ namespace Sketch.Core.CommandHandlers
         }
         public void Handle(ImportStockPhoto command)
         {
-            var stockPhoto = new StockPhoto(command.StockPhotoId, command.Title,
-                                            command.Description, command.ImageUrl,
-                                            command.PageUrl, command.Rating, command.PublishedDate);
+            var stockPhoto = new StockPhoto(command.StockPhotoId, command.UniqueId,
+                                            command.PageUrl, command.Category,
+                                            command.Rating, command.PublishedDate);
 
             _store.Save(stockPhoto, command.Id.ToString());
         }

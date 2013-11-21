@@ -10,17 +10,20 @@ namespace Sketch.StockPhotoImporter.Syndication
             var contentElement = element.Element(xmlnsMedia.GetName("content"));
             return new FeedItem
                        {
+                           Guid = (string)element.Element("guid"),
                            Title = (string)element.Element("title"),
                            Link = (string)element.Element("link"),
                            PubDate = (string)element.Element("pubDate"),
                            Description = (string)element.Element(xmlnsMedia.GetName("description")),
                            Rating = (string)element.Element(xmlnsMedia.GetName("rating")),
+                           Category = (string)element.Element(xmlnsMedia.GetName("category")),
                            Content = contentElement == null 
                                ? default(string) 
                                : (string)contentElement.Attribute("url"),
                        };
         }
 
+        public string Guid { get; private set; }
         public string Title { get; private set; }
 
         public string Link { get; private set; }
@@ -31,7 +34,9 @@ namespace Sketch.StockPhotoImporter.Syndication
 
         public string Content { get; private set; }
 
-        public object Rating { get; set; }
+        public string Rating { get; set; }
+
+        public string Category { get; set; }
 
         public bool HasContent
         {

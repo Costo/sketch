@@ -50,7 +50,7 @@ namespace Sketch.Web.Controllers
                             {
                                 DrawingSessionId = id,
                                 DurationInMilliseconds = (int)photo.Duration.TotalMilliseconds,
-                                ImageUrl = photo.ImageUrl,
+                                ImageUrl = photo.PageUrl,
                                 NumberOfElapsedPhotos = index,
                                 NumberOfRemaningPhotos = session.Photos.Count - index,
                                 NextPageUrl = Url.Action("Draw", new

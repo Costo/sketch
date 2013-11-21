@@ -13,16 +13,15 @@ namespace Sketch.Core.Domain
 
         }
 
-        public StockPhoto(Guid id, string title, string description, string imageUrl, string pageUrl, string rating, string publishedDate) 
+        public StockPhoto(Guid id, string uniqueId, string pageUrl, string category, string rating, string publishedDate) 
             : this(id)
         {
             this.Update(new StockPhotoCreated
             {
-                Title = title,
-                Description = description,
-                ImageUrl = imageUrl,
+                UniqueId = uniqueId,
                 PageUrl = pageUrl,
                 Rating = rating,
+                Category = category,
                 PublishedDate = publishedDate,
                 ImportedDate = DateTime.UtcNow,
             });

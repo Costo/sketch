@@ -62,6 +62,7 @@ namespace Sketch.Test
             Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("description")), actual.Description);
             Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("content")).Attribute("url"), actual.Content);
             Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("rating")), actual.Rating);
+            Assert.AreEqual((string)expected.Element(xmlnsMedia.GetName("category")), actual.Category);
 
         }
     }
