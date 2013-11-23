@@ -8,7 +8,7 @@ namespace Sketch.Core.ReadModel
     public class StockPhotoDetail
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid StockPhotoId { get; set; }
         public string UniqueId { get; set; }
         public string Rating { get; set; }
         public string Category { get; set; }

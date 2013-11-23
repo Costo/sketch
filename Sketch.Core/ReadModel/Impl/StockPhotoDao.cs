@@ -26,11 +26,11 @@ namespace Sketch.Core.ReadModel.Impl
             }
         }
 
-        public bool Exists(string imageUrl)
+        public bool Exists(string uniqueId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Set<StockPhotoDetail>().Find(imageUrl) != null;
+                return context.Set<StockPhotoDetail>().Any(x=> x.UniqueId == uniqueId);
             }
         }
     }

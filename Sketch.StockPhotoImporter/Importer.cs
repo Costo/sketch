@@ -35,7 +35,7 @@ namespace Sketch.StockPhotoImporter
                 var feed = new Feed(rssFeedUrl);
                 foreach (var item in feed.Where(x => x.HasContent))
                 {
-                    if (!_dao.Exists(imageUrl: item.Content))
+                    if (!_dao.Exists(uniqueId: item.Guid))
                     {
                         var command = Mapper.Map<ImportStockPhoto>(item);
                         command.StockPhotoId = Guid.NewGuid();

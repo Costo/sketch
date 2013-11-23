@@ -31,7 +31,7 @@ namespace Sketch.Core.CommandHandlers
             var timeSpans = new Stack<TimeSpan>(timesInMinutes.Select(TimeSpan.FromMinutes));
             foreach (var p in photos)
             {
-                drawingSession.AddPhoto(p.Id, p.PageUrl, timeSpans.Pop());
+                drawingSession.AddPhoto(p.StockPhotoId, p.PageUrl, timeSpans.Pop());
             }
 
             _store.Save(drawingSession, command.Id.ToString());
@@ -43,7 +43,7 @@ namespace Sketch.Core.CommandHandlers
             
             var photo = _dao.GetRandomStockPhotos(1).Single();
 
-            drawingSession.ReplacePhoto(command.IndexOfPhotoToReplace,photo.Id, photo.PageUrl);
+            drawingSession.ReplacePhoto(command.IndexOfPhotoToReplace,photo.StockPhotoId, photo.PageUrl);
 
             _store.Save(drawingSession, command.Id.ToString());
         }

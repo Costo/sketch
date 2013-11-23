@@ -8,7 +8,8 @@ namespace Sketch.Core
     {
         protected override void Configure()
         {
-            this.CreateMap<StockPhotoCreated, StockPhotoDetail>();
+            this.CreateMap<StockPhotoCreated, StockPhotoDetail>()
+                .ForMember(x=>x.StockPhotoId, opt => opt.MapFrom(x=>x.SourceId));
         }
     }
 }
