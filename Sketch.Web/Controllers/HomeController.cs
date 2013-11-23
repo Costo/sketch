@@ -5,6 +5,9 @@ using Sketch.Core.Commands;
 using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
 using Sketch.Web.Models;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Sketch.Web.Controllers
 {
@@ -36,7 +39,7 @@ namespace Sketch.Web.Controllers
             return RedirectToAction("Draw", new { Id = drawingSessionId });
         }
 
-        public ActionResult Draw(Guid id, int index=0)
+        public async Task<ActionResult> Draw(Guid id, int index=0)
         {
             var session = _dao.Find(id);
             if (session == null) return HttpNotFound();
@@ -44,13 +47,16 @@ namespace Sketch.Web.Controllers
             var photo = session.Photos.SingleOrDefault(x => x.Order == index);
             if (photo == null) return HttpNotFound();
 
+            var client = new HttpClient();
+            var result = await client.GetStringAsync("http://backend.deviantart.com/oembed?format=xml&url=" + Uri.EscapeDataString(photo.PageUrl));
 
+            var oEmbed = XDocument.Parse(result);
 
             return View(new DrawingSessionPhotoViewModel
                             {
                                 DrawingSessionId = id,
                                 DurationInMilliseconds = (int)photo.Duration.TotalMilliseconds,
-                                ImageUrl = photo.PageUrl,
+                                ImageUrl = (string)oEmbed.Root.Element("{http://www.deviantart.com/difi/}url"),
                                 NumberOfElapsedPhotos = index,
                                 NumberOfRemaningPhotos = session.Photos.Count - index,
                                 NextPageUrl = Url.Action("Draw", new
