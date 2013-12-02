@@ -10,6 +10,7 @@ namespace Sketch.Core.Domain
             : base(id)
         {
             this.Handles<StockPhotoCreated>(NoOp);
+            this.Handles<StockPhotoOEmbedInfoUpdated>(NoOp);
 
         }
 
@@ -24,6 +25,14 @@ namespace Sketch.Core.Domain
                 Category = category,
                 PublishedDate = publishedDate,
                 ImportedDate = DateTime.UtcNow,
+            });
+        }
+
+        public void UpdateOEmbedInfo(OEmbedInfo oEmbed)
+        {
+            this.Update(new StockPhotoOEmbedInfoUpdated
+            {
+                OEmbed = oEmbed
             });
         }
     }
