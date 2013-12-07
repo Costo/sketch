@@ -65,6 +65,7 @@ namespace Sketch.Core.EventHandlers
                     DrawingSessionId = @event.SourceId,
                     StockPhotoId = @event.NewStockPhotoId,
                     PageUrl = @event.NewPageUrl,
+                    OEmbed = Mapper.Map<OEmbedInfoDetail>(@event.OEmbed),
                     Duration = photo.Duration,
                     Order = photo.Order,
                 });

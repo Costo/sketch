@@ -38,13 +38,14 @@ namespace Sketch.Core.Domain
             });
         }
 
-        public void ReplacePhoto(int indexOfPhoto, Guid newStockPhotoId, string newPageUrl)
+        public void ReplacePhoto(int indexOfPhoto, Guid newStockPhotoId, string newPageUrl, OEmbedInfo oEmbed)
         {
             this.Update(new DrawingSessionPhotoReplaced
             {
                 IndexOfPhoto = indexOfPhoto,
                 NewStockPhotoId = newStockPhotoId,
                 NewPageUrl = newPageUrl,
+                OEmbed = oEmbed,
             });
         }
 

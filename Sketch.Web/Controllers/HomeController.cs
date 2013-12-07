@@ -47,6 +47,17 @@ namespace Sketch.Web.Controllers
             var photo = session.Photos.SingleOrDefault(x => x.Order == index);
             if (photo == null) return HttpNotFound();
 
+            var remainingPhotos = session.Photos.Count - index;
+            string nextPageUrl = Url.Action("Draw", new
+                                                    {
+                                                        id,
+                                                        index = index+1
+                                                    });
+            if(remainingPhotos == 0)
+            {
+                nextPageUrl = Url.Action("Summary", new { id });
+            }
+
             return View(new DrawingSessionPhotoViewModel
                             {
                                 DrawingSessionId = id,
@@ -54,11 +65,7 @@ namespace Sketch.Web.Controllers
                                 ImageUrl = photo.OEmbed.Url,
                                 NumberOfElapsedPhotos = index,
                                 NumberOfRemaningPhotos = session.Photos.Count - index,
-                                NextPageUrl = Url.Action("Draw", new
-                                                                     {
-                                                                         id,
-                                                                         index= ++index
-                                                                     })
+                                NextPageUrl = nextPageUrl
                             });
         }
 
@@ -72,6 +79,11 @@ namespace Sketch.Web.Controllers
             });
 
             return RedirectToAction("Draw", new { Id = id, index = index });
+        }
+
+        public ActionResult Summary(Guid id)
+        {
+            return View();
         }
     }
 }

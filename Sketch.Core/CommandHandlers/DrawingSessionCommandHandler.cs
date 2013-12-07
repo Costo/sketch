@@ -44,7 +44,7 @@ namespace Sketch.Core.CommandHandlers
             
             var photo = _dao.GetRandomStockPhotos(1).Single();
 
-            drawingSession.ReplacePhoto(command.IndexOfPhotoToReplace,photo.StockPhotoId, photo.PageUrl);
+            drawingSession.ReplacePhoto(command.IndexOfPhotoToReplace,photo.StockPhotoId, photo.PageUrl, Mapper.Map<OEmbedInfo>(photo.OEmbed));
 
             _store.Save(drawingSession, command.Id.ToString());
         }
