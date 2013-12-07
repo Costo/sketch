@@ -4,6 +4,7 @@ using System.Linq;
 using Sketch.Core.Events;
 using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
+using AutoMapper;
 
 namespace Sketch.Core.EventHandlers
 {
@@ -43,6 +44,7 @@ namespace Sketch.Core.EventHandlers
                     StockPhotoId = @event.StockPhotoId,
                     Duration = @event.Duration,
                     PageUrl = @event.PageUrl,
+                    OEmbed = Mapper.Map<OEmbedInfoDetail>(@event.OEmbed),
                     Order = @event.Index,
                 });
 

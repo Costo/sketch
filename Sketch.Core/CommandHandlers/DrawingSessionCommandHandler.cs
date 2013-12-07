@@ -5,6 +5,7 @@ using Sketch.Core.Commands;
 using Sketch.Core.Domain;
 using Sketch.Core.Infrastructure;
 using Sketch.Core.ReadModel;
+using AutoMapper;
 
 namespace Sketch.Core.CommandHandlers
 {
@@ -31,7 +32,7 @@ namespace Sketch.Core.CommandHandlers
             var timeSpans = new Stack<TimeSpan>(timesInMinutes.Select(TimeSpan.FromMinutes));
             foreach (var p in photos)
             {
-                drawingSession.AddPhoto(p.StockPhotoId, p.PageUrl, timeSpans.Pop());
+                drawingSession.AddPhoto(p.StockPhotoId, p.PageUrl, Mapper.Map<OEmbedInfo>(p.OEmbed), timeSpans.Pop());
             }
 
             _store.Save(drawingSession, command.Id.ToString());

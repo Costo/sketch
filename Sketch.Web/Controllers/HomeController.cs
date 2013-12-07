@@ -47,16 +47,11 @@ namespace Sketch.Web.Controllers
             var photo = session.Photos.SingleOrDefault(x => x.Order == index);
             if (photo == null) return HttpNotFound();
 
-            var client = new HttpClient();
-            var result = await client.GetStringAsync("http://backend.deviantart.com/oembed?format=xml&url=" + Uri.EscapeDataString(photo.PageUrl));
-
-            var oEmbed = XDocument.Parse(result);
-
             return View(new DrawingSessionPhotoViewModel
                             {
                                 DrawingSessionId = id,
                                 DurationInMilliseconds = (int)photo.Duration.TotalMilliseconds,
-                                ImageUrl = (string)oEmbed.Root.Element("{http://www.deviantart.com/difi/}url"),
+                                ImageUrl = photo.OEmbed.Url,
                                 NumberOfElapsedPhotos = index,
                                 NumberOfRemaningPhotos = session.Photos.Count - index,
                                 NextPageUrl = Url.Action("Draw", new

@@ -7,10 +7,8 @@ namespace Sketch.Core.Events
     {
         public Guid StockPhotoId { get; set; }
         public string PageUrl { get; set; }
-
+        public Domain.OEmbedInfo OEmbed { get; set; }
         public TimeSpan Duration { get; set; }
-
         public int Index { get; set; }
-
     }
 }

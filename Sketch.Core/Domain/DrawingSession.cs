@@ -26,12 +26,13 @@ namespace Sketch.Core.Domain
             }
         }
 
-        public void AddPhoto(Guid stockPhotoId, string pageUrl, TimeSpan duration)
+        public void AddPhoto(Guid stockPhotoId, string pageUrl, OEmbedInfo oEmbed, TimeSpan duration)
         {
             this.Update(new DrawingSessionPhotoAdded
             {
                 StockPhotoId = stockPhotoId,
                 PageUrl = pageUrl,
+                OEmbed = oEmbed,
                 Duration = duration,
                 Index = photoCount,
             });

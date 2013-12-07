@@ -24,7 +24,9 @@ namespace Sketch.Core.ReadModel
         [Key, Column(Order = 2)]
         public Guid StockPhotoId { get; set; }
         public string PageUrl { get; set; }
+        public OEmbedInfoDetail OEmbed { get; set; }
         public TimeSpan Duration { get; set; }
         public int Order { get; set; }
+
     }
 }

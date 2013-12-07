@@ -13,7 +13,8 @@ namespace Sketch.Core
                 .ForMember(x => x.StockPhotoId, opt => opt.MapFrom(x=>x.SourceId))
                 .ForMember(x => x.OEmbed, opt => opt.Ignore());
 
-            this.CreateMap<Sketch.Core.Domain.OEmbedInfo, Sketch.Core.ReadModel.OEmbedInfoDetail>();
+            this.CreateMap<Sketch.Core.Domain.OEmbedInfo, Sketch.Core.ReadModel.OEmbedInfoDetail>()
+                .ReverseMap();
         }
     }
 }
