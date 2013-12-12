@@ -83,7 +83,10 @@ namespace Sketch.Web.Controllers
 
         public ActionResult Summary(Guid id)
         {
-            return View();
+            var session = _dao.Find(id);
+            if (session == null) return HttpNotFound();
+
+            return View(session);
         }
     }
 }
