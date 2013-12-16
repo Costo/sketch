@@ -47,7 +47,7 @@ namespace Sketch.Web.Controllers
             var photo = session.Photos.SingleOrDefault(x => x.Order == index);
             if (photo == null) return HttpNotFound();
 
-            var remainingPhotos = session.Photos.Count - index;
+            var remainingPhotos = session.Photos.Count - (index+1);
             string nextPageUrl = Url.Action("Draw", new
                                                     {
                                                         id,

@@ -30,7 +30,7 @@ namespace Sketch.StockPhotoImporter
             {
 
                 var importer = new Importer(ServiceLocator.GetInstance<ICommandBus>(), ServiceLocator.GetInstance<IStockPhotoDao>(), new Clock());
-                importer.Url = "http://browse.deviantart.com/resources/stockart/model/";
+                importer.Url = "http://www.deviantart.com/resources/stockart/model/?order=14"; //Popular 1 week
                 importer.Start();
 
                 Thread.Sleep(1000 * 3600);
