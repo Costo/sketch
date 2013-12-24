@@ -1,16 +1,24 @@
 ﻿using System;
 using Sketch.Core.Events;
 using Sketch.Core.Infrastructure;
+using System.Collections.Generic;
 
 namespace Sketch.Core.Domain
 {
     public class StockPhoto : AggregateRoot
     {
+        public StockPhoto(Guid id, IEnumerable<IEvent> history)
+            : this(id)
+        {
+            LoadFrom(history);
+        }
+
         public StockPhoto(Guid id)
             : base(id)
         {
             this.Handles<StockPhotoCreated>(NoOp);
             this.Handles<StockPhotoOEmbedInfoUpdated>(NoOp);
+            this.Handles<StockPhotoBanned>(NoOp);
 
         }
 
@@ -34,6 +42,11 @@ namespace Sketch.Core.Domain
             {
                 OEmbed = oEmbed
             });
+        }
+
+        public void Ban()
+        {
+            this.Update(new StockPhotoBanned());
         }
     }
 }

@@ -11,7 +11,9 @@ using System.Xml.Linq;
 
 namespace Sketch.Core.CommandHandlers
 {
-    public class StockPhotoCommandHandler: ICommandHandler<ImportStockPhoto>
+    public class StockPhotoCommandHandler: 
+        ICommandHandler<ImportStockPhoto>,
+        ICommandHandler<BanStockPhoto>
     {
         private readonly IEventStore _store;
         public StockPhotoCommandHandler(IEventStore store)
@@ -49,6 +51,15 @@ namespace Sketch.Core.CommandHandlers
             oEmbed.Height = (int)root.Element(ns.GetName("height"));
 
             stockPhoto.UpdateOEmbedInfo(oEmbed);
+
+            _store.Save(stockPhoto, command.Id.ToString());
+        }
+
+        public void Handle(BanStockPhoto command)
+        {
+            var stockPhoto = _store.Get<StockPhoto>(command.StockPhotoId);
+
+            stockPhoto.Ban();
 
             _store.Save(stockPhoto, command.Id.ToString());
         }

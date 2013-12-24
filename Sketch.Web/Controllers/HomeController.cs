@@ -39,13 +39,14 @@ namespace Sketch.Web.Controllers
             return RedirectToAction("Draw", new { Id = drawingSessionId });
         }
 
-        public async Task<ActionResult> Draw(Guid id, int index=0)
+        public ActionResult Draw(Guid id, int index=0)
         {
             var session = _dao.Find(id);
             if (session == null) return HttpNotFound();
 
             var photo = session.Photos.SingleOrDefault(x => x.Order == index);
-            if (photo == null) return HttpNotFound();
+            if (photo == null) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
 
             var remainingPhotos = session.Photos.Count - (index+1);
             string nextPageUrl = Url.Action("Draw", new
@@ -70,12 +71,36 @@ namespace Sketch.Web.Controllers
         }
 
 
+        [HttpPost]
         public ActionResult Replace(Guid id, int index)
         {
             _commandBus.Send(new ReplaceDrawingSessionPhoto
             {
                 DrawingSessionId = id,
                 IndexOfPhotoToReplace = index,
+            });
+
+            return RedirectToAction("Draw", new { Id = id, index = index });
+        }
+
+        [HttpPost]
+        public ActionResult Ban(Guid id, int index)
+        {
+            var session = _dao.Find(id);
+            if (session == null) return HttpNotFound();
+
+            var photo = session.Photos.SingleOrDefault(x => x.Order == index);
+            if (photo == null) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+            _commandBus.Send(new ReplaceDrawingSessionPhoto
+            {
+                DrawingSessionId = id,
+                IndexOfPhotoToReplace = index,
+            });
+
+            _commandBus.Send(new BanStockPhoto
+            {
+                StockPhotoId = photo.StockPhotoId,
             });
 
             return RedirectToAction("Draw", new { Id = id, index = index });

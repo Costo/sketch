@@ -20,6 +20,7 @@ namespace Sketch.Core.ReadModel.Impl
             using (var context = _contextFactory.Invoke())
             {
                 return context.Set<StockPhotoDetail>().ToArray()
+                              .Where(x => x.OEmbed.Type == "photo")
                               .OrderBy(x => _random.NextDouble())
                               .Take(count)
                               .ToArray();

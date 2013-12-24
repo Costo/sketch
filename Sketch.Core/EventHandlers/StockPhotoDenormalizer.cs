@@ -13,7 +13,8 @@ using Sketch.Core.ReadModel;
 namespace Sketch.Core.EventHandlers
 {
     public class StockPhotoDenormalizer: IEventHandler<StockPhotoCreated>,
-        IEventHandler<StockPhotoOEmbedInfoUpdated>
+        IEventHandler<StockPhotoOEmbedInfoUpdated>,
+        IEventHandler<StockPhotoBanned>
     {
         readonly Func<DbContext> _contextFactory;
 
@@ -39,6 +40,17 @@ namespace Sketch.Core.EventHandlers
                 var stockPhoto = context.Set<StockPhotoDetail>().Find(@event.SourceId);
                 stockPhoto.OEmbed = Mapper.Map<Sketch.Core.ReadModel.OEmbedInfoDetail>(@event.OEmbed);
 
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(StockPhotoBanned @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var stockPhoto = context.Set<StockPhotoDetail>().Find(@event.SourceId);
+
+                context.Set<StockPhotoDetail>().Remove(stockPhoto);
                 context.SaveChanges();
             }
         }

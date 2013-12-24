@@ -69,12 +69,14 @@
     <Compile Include="CommandHandlers\StockPhotoCommandHandler.cs" />
     <Compile Include="Commands\DownloadOEmbedData.cs" />
     <Compile Include="Commands\GenerateDrawingSession.cs" />
+    <Compile Include="Commands\BanStockPhoto.cs" />
     <Compile Include="Commands\ImportStockPhoto.cs" />
     <Compile Include="Commands\ReplaceDrawingSessionPhoto.cs" />
     <Compile Include="Database\ConnectionFactory.cs" />
     <Compile Include="Database\SketchDbContext.cs" />
     <Compile Include="Domain\DrawingSession.cs" />
     <Compile Include="Domain\OEmbedInfo.cs" />
+    <Compile Include="Events\StockPhotoBanned.cs" />
     <Compile Include="Events\StockPhotoOEmbedInfoUpdated.cs" />
     <Compile Include="Domain\StockPhoto.cs" />
     <Compile Include="EventHandlers\DrawingSessionDenormalizer.cs" />
