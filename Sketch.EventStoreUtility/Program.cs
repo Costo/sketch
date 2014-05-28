@@ -32,6 +32,8 @@ namespace Sketch.EventStoreUtility
                 var eventStore = new SqlEventStore(ServiceLocator.GetInstance<ITextSerializer>(), ServiceLocator.GetInstance<IEventBus>());
                 eventStore.Advanced.ReplayEvents();
             }
+
+            Console.ReadLine();
         }
 
         private static void Initialize()

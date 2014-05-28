@@ -58,8 +58,16 @@ namespace Sketch.Core.EventHandlers
             {
                 var drawingSession = context.Set<DrawingSessionDetail>().Find(@event.SourceId);
 
+                if (drawingSession.Photos.Any(x => x.StockPhotoId == @event.NewStockPhotoId))
+                {
+                    // Ignore this event as it will cause a primary key violation
+                    // Could happen with older events...
+                    return;
+                }
+
                 var photo = drawingSession.Photos.Single(x => x.Order == @event.IndexOfPhoto);
                 drawingSession.Photos.Remove(photo);
+
                 drawingSession.Photos.Add(new DrawingSessionPhoto
                 {
                     DrawingSessionId = @event.SourceId,

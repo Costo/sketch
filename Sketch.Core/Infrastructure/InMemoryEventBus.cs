@@ -8,20 +8,23 @@ namespace Sketch.Core.Infrastructure
 {
     public class InMemoryEventBus: IEventBus, IEventHandlerRegistry
     {
+        private object _gate = new object();
+        private List<IEvent> events = new List<IEvent>();
+
         readonly IList<IEventHandler> _handlers = new List<IEventHandler>();
+
+        private readonly IDictionary<Type, IEventHandler[]> _registry = new Dictionary<Type, IEventHandler[]>(); 
 
         public void Publish(IEvent @event)
         {
-            var handlerType = typeof (IEventHandler<>).MakeGenericType(@event.GetType());
-            var handlers = this._handlers.Where(handlerType.IsInstanceOfType)
-                .ToArray();
-            foreach (var handler in handlers)
+            this.events.Add(@event);
+
+            var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
+
+            foreach (dynamic handler in this._handlers
+                .Where(x => handlerType.IsAssignableFrom(x.GetType())))
             {
-                handlerType.InvokeMember("Handle",
-                                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod,
-                                         null,
-                                         handler,
-                                         new[] {@event});
+                handler.Handle((dynamic)@event);
             }
         }
 

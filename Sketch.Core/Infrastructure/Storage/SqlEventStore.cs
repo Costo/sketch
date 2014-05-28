@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace Sketch.Core.Infrastructure.Storage
 {
@@ -63,14 +66,35 @@ namespace Sketch.Core.Infrastructure.Storage
 
         void IAdvancedEventStore.ReplayEvents()
         {
+            var count = 0;
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             using (var context = new EventStoreDbContext())
             {
-                foreach (var @event in context.Events.OrderBy(x=>x.AggregateId).ThenBy(x=>x.Version))
-                {
-                    var payload = (IEvent)_serializer.Deserialize(@event.Payload, Type.GetType(@event.EventType));
-                    _eventBus.Publish(payload);
-                }
+                
+                Parallel.ForEach(context.Events
+                    .OrderBy(x => x.AggregateId)
+                    .ThenBy(x => x.Version)
+                    .GroupBy(x => x.AggregateId), group =>
+                    {
+                        foreach (var @event in group)
+                        {
+                            var payload =
+                                (IEvent) _serializer.Deserialize(@event.Payload, Type.GetType(@event.EventType));
+                            _eventBus.Publish(payload);
+
+                            if ((++count)%100 == 0)
+                            {
+                                Console.WriteLine("Published " + count + " events in " + stopwatch.Elapsed.TotalSeconds +
+                                                  "s (" + (count/stopwatch.Elapsed.TotalSeconds).ToString("0.00") +
+                                                  " events/s)");
+                            }
+                        }
+                    });
+
             }
+            Console.WriteLine("Published " + count + " events in " + stopwatch.Elapsed.TotalSeconds + "s");
+            stopwatch.Stop();
         }
     }
 }
