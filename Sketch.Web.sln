@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Web", "Sketch.Web\Sketch.Web.csproj", "{3BA54107-0A15-4579-B370-CFD01943AA7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Test", "Sketch.Test\Sketch.Test.csproj", "{88CEB833-5044-406A-91BB-C679A5C9B431}"
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4689301-23C4-4B78-B765-6BC03C5DF010}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -12,13 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B46893
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Web", "Sketch.Web\Sketch.Web.csproj", "{3BA54107-0A15-4579-B370-CFD01943AA7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Test", "Sketch.Test\Sketch.Test.csproj", "{88CEB833-5044-406A-91BB-C679A5C9B431}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.StockPhotoImporter", "Sketch.StockPhotoImporter\Sketch.StockPhotoImporter.csproj", "{37AD1ABF-51E3-4146-8AEC-18BC8ECA4010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.Core", "Sketch.Core\Sketch.Core.csproj", "{7A0E3F24-27B4-4F13-AFF7-2BAB4621CA9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketch.EventStoreUtility", "Sketch.EventStoreUtility\Sketch.EventStoreUtility.csproj", "{5AAD4A2B-5B21-4A78-9922-01F3E5B10385}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Sketch.Cloud", "Sketch.Cloud\Sketch.Cloud.ccproj", "{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}"
+Project("{2B9991BB-E522-30BD-AEAA-44A7C0A198E8}") = "Sketch.Cloud", "Sketch.Cloud\Sketch.Cloud.ccproj", "{815ACAFD-0DCC-4CCE-9866-973FAF2AF19B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

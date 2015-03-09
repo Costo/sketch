@@ -6,7 +6,7 @@ namespace Sketch.Core.Database
     public class SketchDbContext: DbContext
     {
         public SketchDbContext()
-            : base("Sketch")
+            : base("DbContext.Sketch")
         {
         }
 

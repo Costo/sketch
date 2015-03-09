@@ -41,16 +41,14 @@ namespace Sketch.Web
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            Database.DefaultConnectionFactory = new ConnectionFactory(Database.DefaultConnectionFactory);
             Database.SetInitializer<SketchDbContext>(null);
             Database.SetInitializer<EventStoreDbContext>(null);
             using (var sketchDbContext = new SketchDbContext())
             using (var eventStoreDbContext = new EventStoreDbContext())
             {
-                if (!sketchDbContext.Database.Exists())
-                {
-                    ((IObjectContextAdapter)sketchDbContext).ObjectContext.CreateDatabase();
 
+                if (sketchDbContext.Database.CreateIfNotExists())
+                {
                     eventStoreDbContext.Database.ExecuteSqlCommand(((IObjectContextAdapter)eventStoreDbContext).ObjectContext.CreateDatabaseScript());
                 }
             }
