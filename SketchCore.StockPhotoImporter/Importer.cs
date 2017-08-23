@@ -55,32 +55,9 @@ namespace SketchCore.StockPhotoImporter
                         Category = item.Category,
                         PageUrl = item.Link,
                         PublishedDate = item.PubDate,
-                        
+                        OEmbedInfo = new OEmbedInfo(),
+                        //OEmbedInfo = await FetchOEmbedInfo(item.Link)
                     };
-
-                    //var client = new HttpClient();
-                    //var result = client
-                    //    .GetStringAsync("http://backend.deviantart.com/oembed?format=xml&url=" + Uri.EscapeDataString(command.PageUrl));
-
-                    //Task.WaitAll(result);
-
-                    //var root = XDocument.Parse(result.Result).Root;
-                    //var ns = XNamespace.Get("http://www.deviantart.com/difi/");
-
-                    //var oEmbed = new OEmbedInfo();
-                    //oEmbed.Version = (string)root.Element(ns.GetName("version"));
-                    //oEmbed.Type = (string)root.Element(ns.GetName("type"));
-                    //oEmbed.Title = (string)root.Element(ns.GetName("title"));
-                    //oEmbed.Url = (string)root.Element(ns.GetName("url"));
-                    //oEmbed.AuthorName = (string)root.Element(ns.GetName("author_name"));
-                    //oEmbed.AuthorUrl = (string)root.Element(ns.GetName("author_url"));
-                    //oEmbed.ProviderName = (string)root.Element(ns.GetName("provider_name"));
-                    //oEmbed.ProviderUrl = (string)root.Element(ns.GetName("provider_url"));
-                    //oEmbed.ThumbnailUrl = (string)root.Element(ns.GetName("thumbnail_url"));
-                    //oEmbed.ThumbnailWidth = (int)root.Element(ns.GetName("thumbnail_width"));
-                    //oEmbed.ThumbnailHeight = (int)root.Element(ns.GetName("thumbnail_height"));
-                    //oEmbed.Width = (int)root.Element(ns.GetName("width"));
-                    //oEmbed.Height = (int)root.Element(ns.GetName("height"));
 
                     var dbContext = _runtimeServices.GetRequiredService<ApplicationDbContext>();
 
@@ -89,9 +66,37 @@ namespace SketchCore.StockPhotoImporter
 
                 }
                 Console.WriteLine($"Imported {counter} items");
-                await Task.Delay(5000);
                 rssFeedUrl = feed.Next;
             }
         }
+
+        public async Task<OEmbedInfo> FetchOEmbedInfo(string pageUrl)
+        {
+            var client = new HttpClient();
+            var result = await client
+                .GetStringAsync("http://backend.deviantart.com/oembed?format=xml&url=" + Uri.EscapeDataString(pageUrl));
+
+            var root = XDocument.Parse(result).Root;
+            XNamespace ns = "https://www.deviantart.com/difi/";
+
+            var oEmbed = new OEmbedInfo();
+            oEmbed.Version = (string)root.Element(ns + "version");
+            oEmbed.Type = (string)root.Element(ns + "type");
+            oEmbed.Title = (string)root.Element(ns + "title");
+            oEmbed.Url = (string)root.Element(ns + "url");
+            oEmbed.AuthorName = (string)root.Element(ns + "author_name");
+            oEmbed.AuthorUrl = (string)root.Element(ns + "author_url");
+            oEmbed.ProviderName = (string)root.Element(ns + "provider_name");
+            oEmbed.ProviderUrl = (string)root.Element(ns + "provider_url");
+            oEmbed.ThumbnailUrl = (string)root.Element(ns + "thumbnail_url");
+            oEmbed.ThumbnailWidth = (int)root.Element(ns + "thumbnail_width");
+            oEmbed.ThumbnailHeight = (int)root.Element(ns + "thumbnail_height");
+            oEmbed.Width = (int)root.Element(ns + "width");
+            oEmbed.Height = (int)root.Element(ns + "height");
+
+            return oEmbed;
+
+        }
+
     }
 }

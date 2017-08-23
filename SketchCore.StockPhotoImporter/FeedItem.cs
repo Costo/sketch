@@ -1,6 +1,7 @@
 ﻿using SketchCore.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -48,10 +49,6 @@ namespace SketchCore.StockPhotoImporter
             get { return !string.IsNullOrEmpty(Content); }
         }
 
-        public Task<OEmbedInfo> FetchOEmbedInfo()
-        {
-            throw new NotImplementedException();
-        }
-
+        
     }
 }
