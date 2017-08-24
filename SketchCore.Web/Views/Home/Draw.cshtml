@@ -1,0 +1,20 @@
+﻿@model  DrawViewModel
+@{
+    ViewData["Title"] = "Draw";
+}
+
+<h2>Draw</h2>
+<a href="@Model.Next" class="btn btn-link">Skip</a>
+<div class="img-container" style='background: url(@Model.ImageUrl) 50% 50% no-repeat; background-size: contain'></div>
+
+@section Scripts {
+    <script>
+        resizePhoto();
+        $(window).on('resize', resizePhoto);
+
+        function resizePhoto() {
+            $('.img-container').height($(window).height() - 133);
+        }
+    </script>
+}
+

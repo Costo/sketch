@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using SketchCore.Core.Data;
 using SketchCore.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
+using SketchCore.Web.Models;
 
 namespace SketchCore.Web.Controllers
 {
@@ -33,7 +35,32 @@ namespace SketchCore.Web.Controllers
                 .AsNoTracking()
                 .ToArray();
 
-            return RedirectToAction(nameof(Index));
+            var durations = new[] { 30, 30, 30, 60, 60, 120, 120, 5 * 60, 5 * 60, 10 * 60 };
+            var @params = new
+            {
+                id = photos[0].Id,
+                p = new StringValues(photos.Select(x => x.Id.ToString()).ToArray()),
+                d = new StringValues(durations.Select(x => x.ToString()).ToArray())
+            };
+            return RedirectToAction(nameof(Draw), @params);
+        }
+
+        public async Task<IActionResult> Draw(
+            int id,
+            [FromQuery(Name = "p")]int[] photos,
+            [FromQuery(Name = "d")]int[] durations)
+        {
+            var photo = await _dbContext.Set<StockPhoto>().FindAsync(id);
+            var @params = new
+            {
+                id = photos[Array.IndexOf(photos, id) + 1],
+                p = new StringValues(photos.Select(x => x.ToString()).ToArray()),
+                d = new StringValues(durations.Select(x => x.ToString()).ToArray())
+            };
+            return View(new DrawViewModel {
+                ImageUrl = "https://img12.deviantart.net/ea82/i/2006/340/3/d/frog_and_toad_are_holmes_by_thedanimator.jpg",
+                Next = Url.Action(nameof(Draw), @params)
+            });
         }
 
         public IActionResult About()
