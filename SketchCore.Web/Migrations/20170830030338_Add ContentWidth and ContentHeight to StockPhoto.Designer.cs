@@ -11,9 +11,10 @@ using System;
 namespace SketchCore.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170830030338_Add ContentWidth and ContentHeight to StockPhoto")]
+    partial class AddContentWidthandContentHeighttoStockPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

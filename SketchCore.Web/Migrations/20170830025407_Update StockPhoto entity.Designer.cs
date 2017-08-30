@@ -11,9 +11,10 @@ using System;
 namespace SketchCore.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170830025407_Update StockPhoto entity")]
+    partial class UpdateStockPhotoentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,12 +29,8 @@ namespace SketchCore.Web.Migrations
                     b.Property<string>("Category")
                         .HasMaxLength(256);
 
-                    b.Property<int>("ContentHeight");
-
                     b.Property<string>("ContentUrl")
                         .HasMaxLength(256);
-
-                    b.Property<int>("ContentWidth");
 
                     b.Property<string>("Copyright")
                         .HasMaxLength(256);

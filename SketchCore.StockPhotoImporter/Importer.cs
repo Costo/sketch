@@ -1,6 +1,5 @@
 ﻿using SketchCore.Core.Data;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,7 @@ namespace SketchCore.StockPhotoImporter
     class Importer
     {
         private IServiceProvider _runtimeServices;
-        private HttpClient _httpClient = new HttpClient();
+        private static HttpClient _httpClient = new HttpClient();
 
         public Importer(IServiceProvider runtimeServices)
         {
@@ -51,52 +50,32 @@ namespace SketchCore.StockPhotoImporter
                     var stockPhoto = new StockPhoto
                     {
                         UniqueId = item.Guid,
+                        Title = item.Title,
+                        Description = item.Description,
                         Rating = item.Rating,
                         Category = item.Category,
+                        Copyright = item.Copyright,
                         PageUrl = item.Link,
                         PublishedDate = item.PubDate,
-                        OEmbedInfo = new OEmbedInfo(),
-                        //OEmbedInfo = await FetchOEmbedInfo(item.Link)
+                        ImportedDate = DateTime.UtcNow,
+                        ContentUrl = item.Content.Url,
+                        ContentWidth = item.Content.Width,
+                        ContentHeight = item.Content.Height,
+                        Thumbnails = item.Thumbnails.Select(x => new Thumbnail
+                        {
+                            Url = x.Url,
+                            Width = x.Width,
+                            Height = x.Height
+                        }).ToArray()
                     };
 
                     var dbContext = _runtimeServices.GetRequiredService<ApplicationDbContext>();
-
                     dbContext.Set<StockPhoto>().Add(stockPhoto);
                     dbContext.SaveChanges();
-
                 }
                 Console.WriteLine($"Imported {counter} items");
                 rssFeedUrl = feed.Next;
             }
         }
-
-        public async Task<OEmbedInfo> FetchOEmbedInfo(string pageUrl)
-        {
-            var client = new HttpClient();
-            var result = await client
-                .GetStringAsync("http://backend.deviantart.com/oembed?format=xml&url=" + Uri.EscapeDataString(pageUrl));
-
-            var root = XDocument.Parse(result).Root;
-            XNamespace ns = "https://www.deviantart.com/difi/";
-
-            var oEmbed = new OEmbedInfo();
-            oEmbed.Version = (string)root.Element(ns + "version");
-            oEmbed.Type = (string)root.Element(ns + "type");
-            oEmbed.Title = (string)root.Element(ns + "title");
-            oEmbed.Url = (string)root.Element(ns + "url");
-            oEmbed.AuthorName = (string)root.Element(ns + "author_name");
-            oEmbed.AuthorUrl = (string)root.Element(ns + "author_url");
-            oEmbed.ProviderName = (string)root.Element(ns + "provider_name");
-            oEmbed.ProviderUrl = (string)root.Element(ns + "provider_url");
-            oEmbed.ThumbnailUrl = (string)root.Element(ns + "thumbnail_url");
-            oEmbed.ThumbnailWidth = (int)root.Element(ns + "thumbnail_width");
-            oEmbed.ThumbnailHeight = (int)root.Element(ns + "thumbnail_height");
-            oEmbed.Width = (int)root.Element(ns + "width");
-            oEmbed.Height = (int)root.Element(ns + "height");
-
-            return oEmbed;
-
-        }
-
     }
 }

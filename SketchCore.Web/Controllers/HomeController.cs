@@ -58,7 +58,7 @@ namespace SketchCore.Web.Controllers
                 d = new StringValues(durations.Select(x => x.ToString()).ToArray())
             };
             return View(new DrawViewModel {
-                ImageUrl = "https://img12.deviantart.net/ea82/i/2006/340/3/d/frog_and_toad_are_holmes_by_thedanimator.jpg",
+                ImageUrl = photo.ContentUrl,
                 Next = Url.Action(nameof(Draw), @params)
             });
         }

@@ -24,21 +24,21 @@ namespace SketchCore.Core.Data
                 b.HasAlternateKey(x => x.UniqueId);
                 b.Property(x => x.Id).ValueGeneratedOnAdd();
                 b.Property(x => x.UniqueId).HasMaxLength(256);
+                b.Property(x => x.Title).HasMaxLength(256);
+                b.Property(x => x.Description);
+                b.Property(x => x.Copyright).HasMaxLength(256);
                 b.Property(x => x.Rating).HasMaxLength(256);
                 b.Property(x => x.Category).HasMaxLength(256);
                 b.Property(x => x.PageUrl).HasMaxLength(256);
+                b.Property(x => x.ContentUrl).HasMaxLength(256);
                 b.Property(x => x.PublishedDate).HasMaxLength(256);
-                b.OwnsOne(x => x.OEmbedInfo, o => {
-                    o.Property(x => x.AuthorName).HasMaxLength(256);
-                    o.Property(x => x.AuthorUrl).HasMaxLength(256);
-                    o.Property(x => x.ProviderName).HasMaxLength(256);
-                    o.Property(x => x.ProviderUrl).HasMaxLength(256);
-                    o.Property(x => x.ThumbnailUrl).HasMaxLength(256);
-                    o.Property(x => x.Title).HasMaxLength(256);
-                    o.Property(x => x.Type).HasMaxLength(256);
-                    o.Property(x => x.Url).HasMaxLength(256);
-                    o.Property(x => x.Version).HasMaxLength(256);
-                });
+            });
+
+            builder.Entity<Thumbnail>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Photo).WithMany(x => x.Thumbnails).OnDelete(DeleteBehavior.Cascade);
+                b.Property(x => x.Url).HasMaxLength(512);
             });
 
             
