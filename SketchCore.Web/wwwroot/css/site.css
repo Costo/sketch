@@ -1,50 +1,46 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿header {
+    /* Required to create a new block formatting context
+       http://www.w3.org/TR/CSS2/visuren.html#block-formatting */
+    overflow: hidden;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+footer {
+    height: 60px;
+    background-color: #f5f5f5;
+}
+footer p, footer .progress
+{
+    margin: 20px 0;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+footer .progress {
+    background-color: #fff;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+footer .btn {
+    margin: 13px 0;
 }
 
-/* buttons and links extension to use brackets: [ click me ] */
-.btn-bracketed::before {
-    display: inline-block;
-    content: "[";
-    padding-right: 0.5em;
+.img-container {
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
 }
 
-.btn-bracketed::after {
-    display: inline-block;
-    content: "]";
-    padding-left: 0.5em;
+a.title:link,
+a.title:hover,
+a.title:visited,
+a.title:active {
+    font-weight: bold;
+    color: black;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+a.author-name:link,
+a.author-name:hover,
+a.author-name:visited,
+a.author-name:active {
+    color: black;
 }

@@ -51,6 +51,8 @@ namespace SketchCore.Web.Controllers
             [FromQuery(Name = "d")]int[] durations)
         {
             var photo = await _dbContext.Set<StockPhoto>().FindAsync(id);
+            var duration = durations[Array.IndexOf(photos, id)];
+
             var @params = new
             {
                 id = photos[Array.IndexOf(photos, id) + 1],
@@ -59,7 +61,10 @@ namespace SketchCore.Web.Controllers
             };
             return View(new DrawViewModel {
                 ImageUrl = photo.ContentUrl,
-                Next = Url.Action(nameof(Draw), @params)
+                PhotoCount = photos.Length,
+                PhotoIndex = Array.IndexOf(photos, id),
+                Next = Url.Action(nameof(Draw), @params),
+                Duration = TimeSpan.FromSeconds(duration)
             });
         }
 
