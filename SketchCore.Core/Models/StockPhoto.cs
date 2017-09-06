@@ -20,6 +20,7 @@ namespace SketchCore.Core.Models
         public string PublishedDate { get; set; }
         public DateTime ImportedDate { get; set; }
         public IList<Thumbnail> Thumbnails { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class Thumbnail

@@ -32,6 +32,7 @@ namespace SketchCore.Core.Data
                 b.Property(x => x.PageUrl).HasMaxLength(256);
                 b.Property(x => x.ContentUrl).HasMaxLength(256);
                 b.Property(x => x.PublishedDate).HasMaxLength(256);
+                b.HasQueryFilter(p => !p.IsDeleted);
             });
 
             builder.Entity<Thumbnail>(b =>
