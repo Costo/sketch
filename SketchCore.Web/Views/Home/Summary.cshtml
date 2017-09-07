@@ -1,0 +1,37 @@
+﻿@model SketchCore.Core.Models.StockPhoto[]
+@{
+    ViewBag.Title = "Summary";
+}
+<style>
+
+</style>
+<h2> Summary</h2>
+<a asp-action="Index" class="btn btn-link">&lt;&lt;&nbsp;Home</a>
+
+@{
+    var numberOfRows = (int)Math.Ceiling(Model.Length / 4d);
+}
+@for (int i = 0; i < numberOfRows; i++)
+{
+    <div class='row'>
+        @foreach (var photo in Model.Skip(i * 4).Take(4))
+        {
+            <div class='col-md-3'>
+                <div class="thumbnail">
+                    @if (photo.Thumbnail != null)
+                    {
+                    <img src="@photo.Thumbnail.Url"
+                         width="@photo.Thumbnail.Width"
+                         height="@photo.Thumbnail.Height" />
+                    }
+                    <div class="caption">
+                        <a href="@photo.PageUrl" class="title">@photo.Title</a><br />
+                        <small>@photo.Copyright</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
 
 namespace SketchCore.Core.Models
 {
@@ -21,6 +23,17 @@ namespace SketchCore.Core.Models
         public DateTime ImportedDate { get; set; }
         public IList<Thumbnail> Thumbnails { get; set; }
         public bool IsDeleted { get; set; }
+
+        [NotMapped]
+        public Thumbnail Thumbnail
+        {
+            get
+            {
+                return Thumbnails
+                    ?.OrderBy(x => x.Width * x.Height)
+                    .FirstOrDefault();
+            }
+        }
     }
 
     public class Thumbnail
