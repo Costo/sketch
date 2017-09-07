@@ -1,0 +1,8 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true;",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true;",
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-SketchCore.Web-ea00d4c3-6c23-48a8-91fd-5eb7e9300b1f;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
