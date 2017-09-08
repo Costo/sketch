@@ -65,8 +65,8 @@ namespace SketchCore.Functions
                 return new Image
                 {
                     Url = (string)element.Attribute("url"),
-                    Width = (int)element.Attribute("width"),
-                    Height = (int)element.Attribute("height")
+                    Width = (int)(double)element.Attribute("width"),
+                    Height = (int)(double)element.Attribute("height")
                 };
             }
         }

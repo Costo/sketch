@@ -1,6 +1,6 @@
 ﻿angular
     .module('sketchApp', [])
-    .controller('TimerCtrl', function ($scope, $rootScope) {
+    .controller('TimerCtrl', ["$scope", function ($scope) {
         var spaceBarHitCount = 0;
         var timer;
 
@@ -43,4 +43,4 @@
             clearInterval(timer);
         }
 
-    });
+    }]);
