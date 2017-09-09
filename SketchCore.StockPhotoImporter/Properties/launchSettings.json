@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SketchCore.StockPhotoImporter": {
-      "commandName": "Project",
-      "commandLineArgs": "import \"https://comicreference.deviantart.com/gallery/\" \"https://vishstudio.deviantart.com/gallery/\""
-    }
-  }
-}
