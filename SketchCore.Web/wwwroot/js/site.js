@@ -11,8 +11,10 @@
                 event.preventDefault();
                 if (++spaceBarHitCount % 2 == 0) {
                     startTimer();
+                    $scope.timerClass = '';
                 } else {
                     stopTimer();
+                    $scope.timerClass = 'blink';
                 }
             }
         });

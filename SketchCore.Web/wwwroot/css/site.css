@@ -38,9 +38,35 @@ a.title:active {
     color: black;
 }
 
-a.author-name:link,
-a.author-name:hover,
-a.author-name:visited,
-a.author-name:active {
-    color: black;
+.blink {
+    -webkit-animation: 1.5s linear infinite blink-effect;
+    animation: 1.5s linear infinite blink-effect;
+}
+
+@-webkit-keyframes blink-effect {
+    0% {
+        visibility: hidden;
+    }
+
+    50% {
+        visibility: hidden;
+    }
+
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes blink-effect {
+    0% {
+        visibility: hidden;
+    }
+
+    50% {
+        visibility: hidden;
+    }
+
+    100% {
+        visibility: visible;
+    }
 }

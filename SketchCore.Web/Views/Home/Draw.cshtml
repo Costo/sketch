@@ -10,14 +10,13 @@
 @using (Html.BeginForm())
 {
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <button type="submit" name="operation" value="replace" class='btn btn-default'><span class='glyphicon glyphicon-refresh'></span> Not now</button>
-            </div>
-            <div class="col-md-2">
                 <button type="submit" name="operation" value="ban" class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span> Never again</button>
+                <a class='btn btn-info' href="@Model.Next"><span class='glyphicon glyphicon-step-forward'></span> Skip</a>
             </div>
             <div class="col-md-1">
-                <p ng-init='timeLeft = @Model.Duration.TotalMilliseconds; nextPageUrl = "@Model.Next"' ng-controller='TimerCtrl'>
+                <p ng-class='timerClass' ng-init='timeLeft = @Model.Duration.TotalMilliseconds; nextPageUrl = "@Model.Next"' ng-controller='TimerCtrl'>
                     <span>{{minutes}}</span>:<span>{{seconds}}</span>
                 </p>
             </div>
