@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>Index</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Model.Url">Page Url</label>
+        <input asp-for="Model.Url" class="form-control" />
+        <span asp-validation-for="Model.Url" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" >Import</button>
+</form>
+
